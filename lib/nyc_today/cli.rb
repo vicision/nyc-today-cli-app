@@ -10,10 +10,7 @@ class NycToday::CLI
   end
 
   def list_events
-    puts <<-DOC.gsub /^\s*/, ''
-      1. First event tonight - First venue name - Event time - Price
-      2. Second event tonight - Second venue name - Event time - Price
-    DOC
+    @events = NycToday::Events.today
   end
 
   def menu
@@ -27,6 +24,9 @@ class NycToday::CLI
         puts "2. Second event tonight - Second venue name - Event time - Price"
       elsif input == "list"
         list_events
+      elsif input == "exit"
+        goodbye
+        exit
       else
         puts "Input not valid: please enter a number from the list above"
       end

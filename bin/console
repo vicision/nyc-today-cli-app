@@ -10,5 +10,5 @@ require "nyc_today"
 # require "pry"
 # Pry.start
 
-require "irb"
-IRB.start
+require "Pry"
+Pry.start
