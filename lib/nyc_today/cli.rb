@@ -3,14 +3,18 @@
 class NycToday::CLI
 
   def call
-    puts "Today's indie concerts and more in NYC:"
     list_events
     menu
     goodbye
   end
 
   def list_events
-    @events = NycToday::Events.today
+    puts "Today's indie concerts and more in NYC:"
+
+    @events = NycToday::Event.today
+    @events.each.with_index(1) do |event, i|
+      puts "#{i}. #{event.name} at #{event.venue} - #{event.time} - #{event.price}"
+    end
   end
 
   def menu
@@ -18,10 +22,9 @@ class NycToday::CLI
     until input == "exit"
       puts "Enter the number of the event for which you'd like more info or type 'list' to see the events again:"
       input = gets.strip.downcase
-      if input == "1"
-        puts "1. First event tonight - First venue name - Event time - Price"
-      elsif input == "2"
-        puts "2. Second event tonight - Second venue name - Event time - Price"
+      if input.to_i > 0
+        this_event = @events[input.to_i-1]
+        puts "#{this_event.name} at #{this_event.venue} - #{this_event.time} - #{this_event.price}"
       elsif input == "list"
         list_events
       elsif input == "exit"
