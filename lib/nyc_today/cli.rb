@@ -10,8 +10,8 @@ class NycToday::CLI
 
   def list_events
     puts "Today's indie concerts and more in NYC:"
-
-    @events = NycToday::Event.today
+    NycToday::Scraper.scrape_events
+    @events = NycToday::Event.all
     @events.each.with_index(1) do |event, i|
       puts "#{i}. #{event.name} at #{event.venue} - #{event.time} - #{event.price}"
     end
