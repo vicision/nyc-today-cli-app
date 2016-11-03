@@ -1,16 +1,25 @@
 class NycToday::Event
   attr_accessor :name, :venue, :time, :price, :ticket_url
 
+  @@all = []
+
+  def initialize
+    @@all << self
+  end
+
   def self.today
     # Should return instances of Events
-    event_1 = self.new
-    event_1.name = "Machine Gun Kelly"
-    event_1.venue = "Irving Plaza"
-    event_1.time = "7:00 PM"
-    event_1.price = "$35"
-    event_1.ticket_url = nil
+    self.scrape_events
+  end
 
-    [event_1]
+  def self.scrape_events
+# Use nokogiri and open-uri to scrape brooklynvegan's events page to extract properties and instantiate an event
+    doc = Nokogiri::HTML(open("http://nyc-shows.brooklynvegan.com/events/today"))
+    doc.css(".ds-event-category-music").each do |event|
+      NycToday::Event.new({
+        name: event.css(".ds-listing-event-title-text").text
+        venue: event.css(".ds-venue-name").text.chomp
+        })
 
   end
 
