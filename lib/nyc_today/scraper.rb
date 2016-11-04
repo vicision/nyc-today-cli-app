@@ -16,7 +16,7 @@ class NycToday::Scraper
         name: event.css(".ds-listing-event-title-text").text,
         venue: event.css(".ds-venue-name").text.gsub(/\s+/, " "),
         time: event.css(".dtstart").text.gsub(/\s+/, " "),
-        price: event_doc.css("h2").text
+        price: event_doc.css("h2.ds-ticket-info").text
         })
 
         # binding.pry
