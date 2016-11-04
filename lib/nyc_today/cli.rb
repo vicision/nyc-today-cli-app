@@ -4,7 +4,7 @@ class NycToday::CLI
 
   def call
     list_events
-    menu
+    # menu
     goodbye
   end
 

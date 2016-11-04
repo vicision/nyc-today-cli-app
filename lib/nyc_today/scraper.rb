@@ -7,9 +7,11 @@ class NycToday::Scraper
     doc.css(".ds-event-category-music").each do |event|
       NycToday::Event.new({
         name: event.css(".ds-listing-event-title-text").text,
-        venue: event.css(".ds-venue-name").text.gsub(/\s+/, ""),
+        venue: event.css(".ds-venue-name").text.gsub(/\s+/, " ")
+        # time: event.css(""),
+        # price: event.css("")
         })
-        binding.pry
+        # binding.pry
     end
 
   end
