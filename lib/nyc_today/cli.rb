@@ -3,23 +3,28 @@
 class NycToday::CLI
 
   def call
-    list_events
+    # list_events
     # menu
     goodbye
+  end
+
+  def welcome
+    puts
+    puts "Welcome to NYC Today!"
+    puts "Your guide to today's indie concerts and other events in the New York Metro Area."
+    puts
   end
 
   def list_events_min
   end
 
   def list_events
-    puts "Today's indie concerts and more in NYC:"
-    NycToday::Scraper.scrape_events
+    NycToday::Scraper.scrape_events_page
     @events = NycToday::Event.all
     @events.each.with_index(1) do |event, i|
       puts "#{i}."
       puts "#{event.name}"
-      puts "#{event.venue}"
-      puts "#{event.time}"
+      puts "#{event.time} at #{event.venue}"
       if event.price_or_age != nil
         puts "#{event.price_or_age}"
       end
