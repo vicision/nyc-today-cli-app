@@ -13,10 +13,10 @@ class NycToday::Scraper
       event_doc = Nokogiri::HTML(open(event_url))
 
       event_hash = NycToday::Event.new({
-        name: event.css(".ds-listing-event-title-text").text,
-        venue: event.css(".ds-venue-name").text.gsub(/\s+/, " "),
-        time: event.css(".dtstart").text.gsub(/\s+/, " "),
-        price: event_doc.css("h2.ds-ticket-info").text
+        name: event.css(".ds-listing-event-title-text").text.gsub(/\s+/, " ").strip,
+        venue: event.css(".ds-venue-name").text.gsub(/\s+/, " ").strip,
+        time: event.css(".dtstart").text.gsub(/\s+/, " ").strip,
+        price_or_age: event_doc.css("h2.ds-ticket-info").text.gsub(/\s+/, " ").strip
         })
 
         # binding.pry

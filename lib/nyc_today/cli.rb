@@ -8,6 +8,9 @@ class NycToday::CLI
     goodbye
   end
 
+  def list_events_min
+  end
+
   def list_events
     puts "Today's indie concerts and more in NYC:"
     NycToday::Scraper.scrape_events
@@ -17,7 +20,10 @@ class NycToday::CLI
       puts "#{event.name}"
       puts "#{event.venue}"
       puts "#{event.time}"
-      puts "#{event.price}"
+      if event.price_or_age != nil
+        puts "#{event.price_or_age}"
+      end
+      puts
     end
   end
 
