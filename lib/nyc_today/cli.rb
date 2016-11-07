@@ -60,7 +60,9 @@ What type of events would you like to see?
       puts "#{i}."
       puts "#{event.name}"
       puts "#{event.time} at #{event.venue}"
-      puts "#{event.price_or_age}"
+      if event.price_or_age != (nil || "" || " ")
+        puts "#{event.price_or_age}"
+      end
       puts
     end
   end
