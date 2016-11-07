@@ -3,7 +3,7 @@
 class NycToday::CLI
 
   def call
-    # welcome
+    welcome
     # menu
     list_events
     goodbye
@@ -21,24 +21,32 @@ class NycToday::CLI
   end
 
   def options
-    puts"  1. Music
-  2. Comedy
-  3. Show me everything!"
+    puts "  1. Music"
+    puts "  2. Comedy"
+    puts "  3. Show me everything!"
   end
 
 
   def selection
+    NycToday::Scraper.scrape_events
     input = gets.strip.to_i
     if input == 1
-      puts
+      puts "Here are today's concerts:"
+      @music
     elsif input == 2
-      puts
+      puts "Here are today's comedy shows:"
+      @comedy
     elsif input == 3
-      puts
+      puts "Here are all of today's events:"
+      list_events
     else
-      puts "Sorry, that's not one of the selections. Please choose from option 1-3."
+      puts "Sorry, that's not one of the options. Please choose 1, 2 or 3."
     end
 
+  end
+
+  def more_info
+    puts "Enter an event number for more information"
   end
 
 =begin
@@ -54,7 +62,6 @@ What type of events would you like to see?
   end
 
   def list_events
-    NycToday::Scraper.scrape_events
     @events = NycToday::Event.all
     @events.each.with_index(1) do |event, i|
       puts "#{i}."

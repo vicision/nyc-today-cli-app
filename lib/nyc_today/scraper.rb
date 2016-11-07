@@ -3,7 +3,12 @@ require 'pry'
 
 class NycToday::Scraper
 
-  @@doc = Nokogiri::HTML(open("http://nyc-shows.brooklynvegan.com/events/today"))
+  # @@doc = Nokogiri::HTML(open("http://nyc-shows.brooklynvegan.com/events/today"))
+
+  def get_page
+Nokogiri::HTML(open("http://nyc-shows.brooklynvegan.com/events#{}"))
+  end
+
 
 
   def self.scrape_events
@@ -18,7 +23,9 @@ class NycToday::Scraper
         name: event.css(".ds-listing-event-title-text").text,
         venue: event.css(".ds-venue-name").text.gsub(/\s+/, " ").strip,
         time: event.css(".dtstart").text.gsub(/\s+/, " ").strip,
-        price_or_age: event_doc.css("h2.ds-ticket-info").text
+        event_type: event.css("."),
+        event_url: event_url,
+        # price_or_age: event_doc.css("h2.ds-ticket-info").text
         })
     end
   end
