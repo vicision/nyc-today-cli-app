@@ -28,14 +28,14 @@ class NycToday::CLI
 
 
   def selection
-    NycToday::Scraper.scrape_events
+    NycToday::Scraper.scrape_events_pg
     input = gets.strip.to_i
     if input == 1
       puts "Here are today's concerts:"
-      @music
+      NycToday::Event.music_array
     elsif input == 2
       puts "Here are today's comedy shows:"
-      @comedy
+      NycToday::Event.comedy_array
     elsif input == 3
       puts "Here are all of today's events:"
       list_events

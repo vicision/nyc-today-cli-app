@@ -11,7 +11,7 @@ Nokogiri::HTML(open("http://nyc-shows.brooklynvegan.com/events#{}"))
 
 
 
-  def self.scrape_events
+  def self.scrape_events_pg
     # event_doc = self.scrape_event
     @@doc.css(".ds-listing").each do |event|
       url_front = "http://nyc-shows.brooklynvegan.com"
@@ -23,10 +23,15 @@ Nokogiri::HTML(open("http://nyc-shows.brooklynvegan.com/events#{}"))
         name: event.css(".ds-listing-event-title-text").text,
         venue: event.css(".ds-venue-name").text.gsub(/\s+/, " ").strip,
         time: event.css(".dtstart").text.gsub(/\s+/, " ").strip,
-        event_type: event.css("."),
         event_url: event_url,
         # price_or_age: event_doc.css("h2.ds-ticket-info").text
         })
+      if event.at_css(".ds-event-category-music")
+        event_hash[:event_type] = "music"
+      elsif event.at_css(".ds-event-category-comedy")
+        event_hash[:event_type] = "comedy"
+      end
+
     end
   end
 
