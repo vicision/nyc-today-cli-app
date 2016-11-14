@@ -28,7 +28,7 @@ class NycToday::CLI
 
 
   def selection
-    NycToday::Scraper.scrape_events_pg
+    NycToday::Scraper.scrape_events
     input = gets.strip.to_i
     if input == 1
       puts "Here are today's concerts:"
