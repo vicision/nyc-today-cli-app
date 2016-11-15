@@ -13,11 +13,11 @@ class NycToday::Event
   end
 
   def self.music_array
-    @@music_array = @@all.collect{|e|e.event_type == "music"}
+    @@music_array = @@all.select{|e|e.event_type == "music"}
   end
 
   def self.comedy_array
-    @@comedy_array = @@all.collect{|e|e.event_type == "comedy"}
+    @@comedy_array = @@all.select{|e|e.event_type == "comedy"}
   end
 
   def self.all
