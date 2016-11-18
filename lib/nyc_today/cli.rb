@@ -21,21 +21,15 @@ class NycToday::CLI
     puts "Enter an event number for more information"
   end
 
-  def list_events_min
-  end
-
   def list_events
     NycToday::Scraper.scrape_events
-    @events = NycToday::Event.all
-    @events.each.with_index(1) do |event, i|
-      puts "#{i} --------------------------"
-      puts "#{event.name}"
-      puts "#{event.time} at #{event.venue}"
-      if event.price_or_age != (nil || "" || " ")
-        puts "#{event.price_or_age}"
-      end
-      puts "Enter the number of any event you'd like to know more about."
+    NycToday::Event.all.sort_by{|e|e.time}.each.with_index(1) do |event, i|
+      puts "#{i.to_s.rjust(3," ")} | #{event.name}"
+      puts "    | #{event.time} at #{event.venue}"
+      puts
     end
+    puts "Enter the number of any event you'd like to know more about."
+    puts
   end
 
   def menu

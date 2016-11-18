@@ -1,5 +1,5 @@
 class NycToday::Event
-  attr_accessor :name, :venue, :time, :price_or_age, :ticket_url, :event_link
+  attr_accessor :name, :venue, :time, :event_link
 
   @@all = []
 
