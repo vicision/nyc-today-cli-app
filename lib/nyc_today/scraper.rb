@@ -1,23 +1,24 @@
 
-require 'pry'
+
+# @@doc = Nokogiri::HTML(open("http://nyc-shows.brooklynvegan.com/events/today"))
+
 
 class NycToday::Scraper
 
-  # @@doc = Nokogiri::HTML(open("http://nyc-shows.brooklynvegan.com/events/today"))
 
   @@main_url = "http://nyc-shows.brooklynvegan.com"
   @@pages = []
 
   def self.get_pages
-    num = 0
-    page_url = @@main_url + "/events/today?page=#{num}"
+    num = 1
+
     while num < 11
-      @@pages << Nokogiri::HTML(open(page_url))
+      page_url = @@main_url + "/events/today?page=#{num}"
+      page = Nokogiri::HTML(open(page_url))
+      @@pages << page
       num += 1
     end
   end
-
-
 
 
   def self.scrape_events
@@ -34,4 +35,7 @@ class NycToday::Scraper
       end
     end
   end
+
+
+
 end
