@@ -11,7 +11,6 @@ class NycToday::Scraper
 
   def self.get_pages
     num = 1
-
     while num < 11
       page_url = @@main_url + "/events/today?page=#{num}"
       page = Nokogiri::HTML(open(page_url))
@@ -30,6 +29,7 @@ class NycToday::Scraper
         event_hash[:name] = event.css(".ds-listing-event-title-text").text.strip
         event_hash[:venue] = event.css(".ds-venue-name").text.gsub!(/\s+/, " ").strip
         event_hash[:time] = event.css(".dtstart").text.gsub!(/\s+/, " ").strip
+        event_hash[:time_stamp] = Time.parse(event_hash[:time])
         event_hash[:event_link] = @@main_url + url_end
         NycToday::Event.new(event_hash)
       end

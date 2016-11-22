@@ -13,7 +13,7 @@ class NycToday::CLI
     puts "Welcome to NYC Today, your guide to today's"
     puts "indie concerts and other events in the New York Metro Area."
     puts
-    puts "Here are today's events:"
+    puts "Here are today's events by time:"
     puts
   end
 
@@ -23,12 +23,13 @@ class NycToday::CLI
 
   def list_events
     NycToday::Scraper.scrape_events
-    NycToday::Event.all.sort_by{|e|e.time}.each.with_index(1) do |event, i|
+    NycToday::Event.all.sort_by!{|e|e.time_stamp}
+    NycToday::Event.all[1..10].each.with_index(1) do |event, i|
       puts "#{i.to_s.rjust(3," ")} | #{event.name}"
       puts "    | #{event.time} at #{event.venue}"
       puts
     end
-    puts "Enter the number of any event you'd like to know more about."
+    puts "Enter the number of any event you'd like to know more about or type 'more' for the next 10 events."
     puts
   end
 
