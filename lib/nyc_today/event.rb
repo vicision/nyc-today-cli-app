@@ -15,7 +15,11 @@ class NycToday::Event
 
   def self.all
     # @@all.uniq! {|e| e.event_link}
-    @@all
+    @@all.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
+  end
+
+  def reset
+    @all.clear!
   end
 
 

@@ -3,6 +3,7 @@
 class NycToday::CLI
 
   def call
+    NycToday::Scraper.scrape_events
     welcome
     list_events
     goodbye
@@ -13,7 +14,7 @@ class NycToday::CLI
     puts "Welcome to NYC Today, your guide to today's"
     puts "indie concerts and other events in the New York Metro Area."
     puts
-    puts "Here are today's events by time:"
+    puts "Here are today's events (ordered by time):"
     puts
   end
 
@@ -21,15 +22,35 @@ class NycToday::CLI
     puts "Enter an event number for more information"
   end
 
+  def event_range
+
+  end
+
+  def more
+
+  end
+
+  @@set = 0
+
+
   def list_events
-    NycToday::Scraper.scrape_events
-    NycToday::Event.all.sort_by!{|e|e.time_stamp}
-    NycToday::Event.all[1..10].each.with_index(1) do |event, i|
-      puts "#{i.to_s.rjust(3," ")} | #{event.name}"
-      puts "    | #{event.time} at #{event.venue}"
-      puts
-    end
-    puts "Enter the number of any event you'd like to know more about or type 'more' for the next 10 events."
+
+    # input = gets.strip.downcase
+    #
+    # until input == "exit"
+      NycToday::Event.all[@@set].each.with_index(1) do |event, i|
+        puts "#{i.to_s.rjust(3," ")} | #{event.name}"
+        puts "    | #{event.time} at #{event.venue}"
+        puts
+      end
+      puts "Enter the number of any event you'd like to know more about or type 'more' for the next 10 events."
+      input = gets.strip.downcase
+        if input == "more"
+          @@set += 1
+          list_events
+        end
+
+    # end
     puts
   end
 
