@@ -7,10 +7,7 @@ class NycToday::Event
     hash.each do |key, value|
       self.send("#{key}=", value)
     end
-    @@all.push(self)
-    # @@all.uniq! do |e|
-    #   {e[:name], e[:venue], e[:time]}
-    # end
+    @@all << self
   end
 
   def self.all
