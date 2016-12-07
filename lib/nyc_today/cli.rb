@@ -20,7 +20,7 @@ class NycToday::CLI
   end
 
   def list_events
-    NycToday::Event.all[@@set].each.with_index(1) do |event, i|
+    NycToday::Event.all_sets_sorted[@@set].each.with_index(1) do |event, i|
       puts "#{i.to_s.rjust(3," ")} | #{event.name}"
       puts "    | #{event.time} at #{event.venue}"
       puts
