@@ -2,12 +2,12 @@
 
 class NycToday::CLI
 
+  @@set = 0
+
   def call
-    NycToday::Scraper.scrape_events
     welcome
+    NycToday::Scraper.scrape_events
     list_events
-    selection
-    goodbye
   end
 
   def welcome
@@ -15,29 +15,8 @@ class NycToday::CLI
     puts "Welcome to NYC Today, your guide to today's"
     puts "indie concerts and other events in the New York Metro Area."
     puts
-    puts "Here are today's events (ordered by time):"
+    puts "Please wait a few seconds while I gather all of today's events (ordered by time)."
     puts
-  end
-
-  def more_info
-    puts "Enter an event number for more information"
-  end
-
-
-  @@set = 0
-
-  def selection
-    input = gets.strip.downcase
-    until @@set == NycToday::Event.all.length-1
-      if input == "more"
-        @@set += 1
-        list_events
-      elsif input == "exit"
-        goodbye
-
-      end
-    end
-    puts "That's all of today's events. Would you like to see them again?"
   end
 
   def list_events
@@ -46,9 +25,53 @@ class NycToday::CLI
       puts "    | #{event.time} at #{event.venue}"
       puts
     end
-    puts "Enter the number of any event you'd like to know more about or type 'more' for the next 10 events."
     selection
   end
+
+  def selection
+    more_events
+    input = gets.strip.downcase
+
+    until @@set == NycToday::Event.all.length-1
+      if input == "" #&& @@set != NycToday::Event.all.length-1
+        @@set += 1
+        list_events
+      elsif input == "exit"
+        goodbye
+      else
+        puts "I'm sorry, I didn't understand what you typed. Please try again."
+      end
+    end
+    end_of_list
+  end
+
+  def more_events
+    puts "Enter the number of any event you'd like to know more about or press Enter for more events."
+  end
+
+
+  def end_of_list
+    puts "This is the end of today's list of events. Would you like to see them again? (Y/n)"
+    puts
+    input = gets.strip.downcase
+    if input == "y"
+      @@set = 0
+      list_events
+    elsif input == "n"
+      goodbye
+    end
+  end
+
+  def more_info
+    puts "Enter an event number for more information"
+  end
+
+  def goodbye
+    puts
+    puts "Good-bye! Come back tomorrow for a new list of events."
+    exit
+  end
+
 
   def menu
     input = nil
@@ -66,10 +89,6 @@ class NycToday::CLI
         puts "Input not valid: please enter a number from the list above"
       end
     end
-  end
-
-  def goodbye
-    puts "Good-bye! Come back tomorrow for a new list of events"
   end
 
 end

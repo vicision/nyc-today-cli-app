@@ -11,7 +11,7 @@ class NycToday::Scraper
 
   def self.get_pages
     num = 1
-    while num < 11
+    while num <= 10
       page_url = @@main_url + "/events/today?page=#{num}"
       page = Nokogiri::HTML(open(page_url))
       @@pages << page
