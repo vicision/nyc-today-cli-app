@@ -8,7 +8,7 @@ class NycToday::Scraper
 
   @@main_url = "http://nyc-shows.brooklynvegan.com"
   @@pages = []
-  @@event_pages = []
+  # @@event_pages = []
 
   def self.get_pages
     num = 1
@@ -19,11 +19,6 @@ class NycToday::Scraper
       num += 1
     end
   end
-
-  def self.event_pages
-    @@event_pages
-  end
-
 
   def self.scrape_events
     get_pages
@@ -39,20 +34,21 @@ class NycToday::Scraper
         NycToday::Event.new(event_hash)
       end
     end
+    scrape_event_pages
   end
 
-  def self.get_event_pages
-    NycToday::Event.all.flatten.each do |event|
-      event_page = Nokogiri::HTML(open(event.event_link))
-      @@event_pages << event_page
-    end
-  end
+  # def self.get_event_pages
+  #   NycToday::Event.all.flatten.each do |event|
+  #     event_page = Nokogiri::HTML(open(event.event_link))
+  #     @@event_pages << event_page
+  #   end
+  # end
 
   def self.scrape_event_pages
-    # get_event_pages
-    # @@event_pages.each do |event_page|
     NycToday::Event.all.each do |event|
-      event[:event_info] = Nokogiri::HTML(open(event[:event_link]))
+      event_page_url = event.event_link
+      event_page = Nokogiri::HTML(open(event_page_url))
+      event.event_info = event_page.css(".ds-event-description-inner").text.gsub!(/\s+/, " ")
     end
   end
 

@@ -31,11 +31,12 @@ class NycToday::CLI
   def selection
     more_events
     input = gets.strip.downcase
-
     until @@set == NycToday::Event.all.length-1
-      if input == "" #&& @@set != NycToday::Event.all.length-1
+      if input == ""
         @@set += 1
         list_events
+      elsif input.to_i > 0
+        more_info
       elsif input == "exit"
         goodbye
       else
@@ -63,7 +64,9 @@ class NycToday::CLI
   end
 
   def more_info
-    puts "Enter an event number for more information"
+    input = gets.strip.downcase
+    this_event = NycToday::Event.all_sets_sorted[@@set][input.to_i-1]
+    puts "#{this_event.event_info}"
   end
 
   def goodbye

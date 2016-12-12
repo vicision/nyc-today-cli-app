@@ -1,5 +1,5 @@
 class NycToday::Event
-  attr_accessor :name, :venue, :time, :time_stamp, :event_link
+  attr_accessor :name, :venue, :time, :time_stamp, :event_link, :event_info
 
   @@all = []
   @@sorted_sets = []
