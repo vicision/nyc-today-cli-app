@@ -71,28 +71,41 @@ class NycToday::CLI
     end
   end
 
-  def reformat_wrapped(s, width=78)
-	  lines = []
+  def reformat_wrapped(text, width=78)
+
+    paragraphs = []
+    lines = []
 	  line = ""
-	  s.split(/\s+/).each do |word|
-	    if line.size + word.size >= width
-	      lines << line
-	      line = word
-	    elsif line.empty?
-	     line = word
-	    else
-	     line << " " << word
-	   end
-	   end
-	   lines << line if line
-	  return lines.join "\n"
+
+
+	  # text.split("n/").each do |parag|
+    #   paragraphs << ""
+    #   paragraphs << parag
+    #   paragraphs << ""
+
+      # paragraphs.each do |word|
+
+	  #   if line.size + word.size >= width
+	  #     lines << line
+	  #     line = word
+	  #   elsif line.empty?
+	  #    line = word
+	  #   else
+	  #    line << " " << word
+	  #  end
+	  #  end
+	  #  lines << line if line
+	  #  lines.join "\n"
+    #end
+    # puts paragraphs
 	end
 
   def more_info(event_choice)
     this_event = NycToday::Event.all_sets_sorted[@@set][event_choice]
     if this_event.event_info != " " && this_event.event_info != nil
       system "clear"
-      puts "#{reformat_wrapped(this_event.event_info, 78)}"
+      puts "#{this_event.event_info}"
+      # puts "#{reformat_wrapped(this_event.event_info, 66)}"
     else
       system "clear"
       puts "I'm sorry, there is no additional information about this event."
@@ -108,6 +121,7 @@ class NycToday::CLI
   end
 
   def goodbye
+    system "clear"
     puts
     puts "Good-bye! Come back tomorrow for a new list of events."
     exit

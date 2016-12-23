@@ -31,6 +31,7 @@ class NycToday::Scraper
         event_hash[:time] = event.css(".dtstart").text.gsub!(/\s+/, " ").strip
         event_hash[:time_stamp] = Time.parse(event_hash[:time])
         event_hash[:event_link] = @@main_url + url_end
+        event.css("ds-event-category-music") ? event_hash[:event_type] = "music" : event_hash[:event_type] = "comedy"
         NycToday::Event.new(event_hash)
       end
     end
@@ -48,10 +49,10 @@ class NycToday::Scraper
     NycToday::Event.all.each do |event|
       event_page_url = event.event_link
       event_page = Nokogiri::HTML(open(event_page_url))
-      event.event_info = event_page.css(".ds-event-description-inner").text.lstrip#.strip.gsub!(/\s+/, " ")
+      event.event_info = event_page.css(".ds-event-description-inner").text.gsub("<br>", "\r\n")
     end
   end
 
-  
+
 
 end
