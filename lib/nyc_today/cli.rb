@@ -13,19 +13,31 @@ class NycToday::CLI
   def welcome
     puts
     puts "Welcome to NYC Today, your guide to today's"
-    puts "indie concerts and other events in the New York Metro Area."
+    puts "live music and other events in the New York Metro Area."
     puts
-    puts "Please wait a few seconds while I gather all of today's events (ordered by time)."
+    puts "Please wait a few seconds while I gather all of today's events"# (ordered by time)."
     puts
   end
 
   def list_events
+    counter = 1
+    puts "Here are today's event categories:"
+    NycToday::Event.event_types.each do |event_type|
+      puts "#{counter}. #{event_type}"
+      counter += 1
+    end
     puts "Here are 10 of today's events:"
     puts
     NycToday::Event.all_sets_sorted[@@set].each.with_index(1) do |event, i|
       puts "#{i.to_s.rjust(3," ")} | #{event.name}"
       puts "    | #{event.time} at #{event.venue}"
-      puts
+      if event.price != " " && event.price != "" && event.price != nil
+        puts "    | #{event.price}"
+        puts
+      else
+        puts
+      end
+      # puts "      #{event.event_type}"
     end
     selection
   end
@@ -103,7 +115,12 @@ class NycToday::CLI
   def more_info(event_choice)
     this_event = NycToday::Event.all_sets_sorted[@@set][event_choice]
     if this_event.event_info != " " && this_event.event_info != nil
-      system "clear"
+    #   system "clear"
+    #   this_event.event_info.each do |para|
+    #     puts para
+    #     puts "\n"
+    #     puts "\n"
+    #   end
       puts "#{this_event.event_info}"
       # puts "#{reformat_wrapped(this_event.event_info, 66)}"
     else
