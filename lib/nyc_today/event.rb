@@ -24,6 +24,8 @@ class NycToday::Event
 
   def self.event_types
     @@event_types = @@all.collect{|event|event.event_type}.uniq!
+    @@event_types.each{|event_type|event_type.split!(" ")}
+
   end
 
 end

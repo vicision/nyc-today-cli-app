@@ -12,10 +12,11 @@ class NycToday::CLI
 
   def welcome
     puts
-    puts "Welcome to NYC Today, your guide to today's"
-    puts "live music and other events in the New York Metro Area."
+    puts "Welcome to NYC Today, your guide to live music
+and other events in the New York Metro Area."
     puts
-    puts "Please wait a few seconds while I gather all of today's events"# (ordered by time)."
+    puts "Please wait while I gather all of today's events.
+This may take up to a minute..."# (ordered by time)."
     puts
   end
 
@@ -26,19 +27,41 @@ class NycToday::CLI
       puts "#{counter}. #{event_type}"
       counter += 1
     end
-    puts "Here are 10 of today's events:"
-    puts
-    NycToday::Event.all_sets_sorted[@@set].each.with_index(1) do |event, i|
-      puts "#{i.to_s.rjust(3," ")} | #{event.name}"
-      puts "    | #{event.time} at #{event.venue}"
-      if event.price != " " && event.price != "" && event.price != nil
-        puts "    | #{event.price}"
-        puts
-      else
-        puts
+    puts "What type of events would you like to see? Please enter a number from the list above."
+    input = gets.strip.to_i
+    choice = NycToday::Event.event_types[input-1].downcase
+    #
+    # NycToday::Event.all[choice]
+
+    NycToday::Event.all.each.with_index(1) do |event, i|
+      if event.event_type.downcase == choice
+        puts "#{i.to_s.rjust(3," ")} | #{event.name}"
+        puts "    | #{event.time} at #{event.venue}"
+        if event.price != " " && event.price != "" && event.price != nil
+          puts "    | #{event.price}"
+          puts
+        else
+          puts
+        end
       end
-      # puts "      #{event.event_type}"
     end
+
+
+
+
+    # puts "Here are 10 of today's events:"
+    # puts
+    # NycToday::Event.all_sets_sorted[@@set].each.with_index(1) do |event, i|
+    #   puts "#{i.to_s.rjust(3," ")} | #{event.name}"
+    #   puts "    | #{event.time} at #{event.venue}"
+    #   if event.price != " " && event.price != "" && event.price != nil
+    #     puts "    | #{event.price}"
+    #     puts
+    #   else
+    #     puts
+    #   end
+    #   # puts "      #{event.event_type}"
+    # end
     selection
   end
 
