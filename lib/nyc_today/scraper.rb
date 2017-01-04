@@ -24,9 +24,11 @@ class NycToday::Scraper
         event_hash[:time] = event.css(".dtstart").text.gsub!(/\s+/, " ").strip
         event_hash[:time_stamp] = Time.parse(event_hash[:time])
         event_hash[:event_link] = @@main_url + url_end
-        event_hash[:event_type] = event.xpath("//*[@class[contains(., 'ds-event-category')]]")[0]["class"].sub!("ds-listing event-card ds-event-category-", "").split("-").map(&:capitalize).join(" ")
+        event_hash[:event_type] = event.attr("class").sub!("ds-listing event-card ds-event-category-", "").split("-").map(&:capitalize).join(" ")
         NycToday::Event.new(event_hash)
       end
+      NycToday::Event.event_types
+      NycToday::Event.reformat_types
     end
     scrape_event_pages
   end
@@ -35,7 +37,7 @@ class NycToday::Scraper
     NycToday::Event.all.each do |event|
       event_page = Nokogiri::HTML(open(event.event_link))
       event.price = event_page.css(".ds-ticket-info").text.strip.gsub!(/\s+/, " ")
-      event.event_info = event_page.css(".ds-event-description-inner").text.lstrip.split("<br>").join("\n\n")
+      event.event_info = event_page.css(".ds-event-description-inner").text.lstrip.split("<br>")
       # event_info[info_paras] = event.event_info.split("\n")
     end
   end

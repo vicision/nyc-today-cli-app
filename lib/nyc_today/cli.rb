@@ -23,10 +23,12 @@ This may take up to a minute..."# (ordered by time)."
   def list_events
     counter = 1
     puts "Here are today's event categories:"
+    puts
     NycToday::Event.event_types.each do |event_type|
-      puts "#{counter}. #{event_type}"
+      puts "#{counter.to_s.rjust(2," ")} | #{event_type}"
       counter += 1
     end
+    puts
     puts "What type of events would you like to see? Please enter a number from the list above."
     input = gets.strip.to_i
     choice = NycToday::Event.event_types[input-1].downcase
@@ -144,7 +146,10 @@ This may take up to a minute..."# (ordered by time)."
     #     puts "\n"
     #     puts "\n"
     #   end
-      puts "#{this_event.event_info}"
+      this_event.event_info.each do |para|
+        puts para
+        puts ""
+      end
       # puts "#{reformat_wrapped(this_event.event_info, 66)}"
     else
       system "clear"
