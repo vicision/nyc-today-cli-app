@@ -1,5 +1,3 @@
-# Our CLI Controller
-
 class NycToday::CLI
 
   @@set = 0
@@ -7,6 +5,7 @@ class NycToday::CLI
   def call
     welcome
     NycToday::Scraper.scrape_events
+    NycToday::Event.reformat_types
     list_events
   end
 

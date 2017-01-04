@@ -24,23 +24,22 @@ class NycToday::Event
 
   def self.event_types
     @@event_types = @@all.collect{|event|event.event_type}.uniq!
-    # self.reformat_types
   end
 
-  def self.reformat_types
-    @@event_types.collect! do |type|
-      if type.include?("Dj")
-        words = type.split(" ")
+  def self.reformat_types #should this be moved to the scraper? IOW, should each event type be reformatted as it's created? Possibly!
+    @@all.collect! do |event|
+      if event.event_type.include?("Dj")
+        words = event.event_type.split(" ")
         words[0].upcase!
         words.join(" ")
-      elsif type.include?("Food")
-        type.insert(4, ",").insert(10, " &")
-      elsif type.include?("Talks")
-        type.split(" ").join(" & ")
-      elsif type.include?("Theatre")
-        type.insert(7, " &")
+      elsif event.event_type.include?("Food")
+        event.event_type.insert(4, ",").insert(10, " &")
+      elsif event.event_type.include?("Talks")
+        event.event_type.split(" ").join(" & ")
+      elsif event.event_type.include?("Theatre")
+        event.event_type.insert(7, " &")
       else
-        type
+        event.event_type
       end
     end
   end
