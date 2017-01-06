@@ -15,7 +15,7 @@ class NycToday::Event
   end
 
   def self.all_sets_sorted
-    @@sorted_sets = @@all.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
+    @@all.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
   end
 
   def reset
@@ -23,19 +23,17 @@ class NycToday::Event
   end
 
   def self.event_types
-    @@event_types = @@all.collect{|event|event.event_type}.uniq!
+    @@all.collect{|event|event.event_type}.uniq!
   end
 
-  def self.reformat_types #should this be moved to the scraper? IOW, should each event type be reformatted as it's created? Possibly!
-    @@all.collect! do |event|
+  def self.reformat_types
+    @@all.each do |event|
       if event.event_type.include?("Dj")
-        words = event.event_type.split(" ")
-        words[0].upcase!
-        words.join(" ")
+        event.event_type.sub!("j", "J")
       elsif event.event_type.include?("Food")
         event.event_type.insert(4, ",").insert(10, " &")
       elsif event.event_type.include?("Talks")
-        event.event_type.split(" ").join(" & ")
+        event.event_type = event.event_type.insert(8, " &")
       elsif event.event_type.include?("Theatre")
         event.event_type.insert(7, " &")
       else

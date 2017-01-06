@@ -5,7 +5,7 @@ class NycToday::CLI
   def call
     welcome
     NycToday::Scraper.scrape_events
-    NycToday::Event.reformat_types
+    # NycToday::Event.reformat_types
     list_events
   end
 
@@ -15,7 +15,7 @@ class NycToday::CLI
 and other events in the New York Metro Area."
     puts
     puts "Please wait while I gather all of today's events.
-This may take up to a minute..."# (ordered by time)."
+This may take up to a minute..."
     puts
   end
 

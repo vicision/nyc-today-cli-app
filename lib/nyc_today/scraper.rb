@@ -27,9 +27,8 @@ class NycToday::Scraper
         event_hash[:event_type] = event.attr("class").sub!("ds-listing event-card ds-event-category-", "").split("-").map(&:capitalize).join(" ")
         NycToday::Event.new(event_hash)
       end
-      # NycToday::Event.event_types
-      # NycToday::Event.reformat_types
     end
+    NycToday::Event.reformat_types
     scrape_event_pages
   end
 
