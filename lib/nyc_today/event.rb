@@ -2,6 +2,7 @@ class NycToday::Event
   attr_accessor :name, :venue, :time, :time_stamp, :event_link, :event_info, :event_type, :price
 
   @@all = []
+  @@sorted_sets = []
 
   def initialize(hash)
     hash.each do |key, value|
@@ -14,8 +15,11 @@ class NycToday::Event
     @@all
   end
 
-  def self.all_sets_sorted
-    @@all.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
+  def self.sorted_sets
+    @@sorted_sets = @@all.collect!{|e|[e.event_type]}
+    @@sorted_sets.each do |set|
+      set.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
+    end
   end
 
   def reset
@@ -23,7 +27,7 @@ class NycToday::Event
   end
 
   def self.event_types
-    @@all.collect{|event|event.event_type}.uniq!
+    @@all.collect{|event|event.event_type}.uniq!.sort_by!{|e|e.length}
   end
 
   def self.reformat_types

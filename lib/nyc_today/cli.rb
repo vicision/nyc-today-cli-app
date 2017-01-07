@@ -12,7 +12,7 @@ class NycToday::CLI
   def welcome
     puts
     puts "Welcome to NYC Today, your guide to live music
-and other events in the New York Metro Area."
+and other events in and around New York City today."
     puts
     puts "Please wait while I gather all of today's events.
 This may take up to a minute..."
@@ -28,33 +28,33 @@ This may take up to a minute..."
       counter += 1
     end
     puts
-    puts "What type of events would you like to see? Please enter a number from the list above."
+    puts "What type of events would you like to see? Please enter a number from the menu above."
     input = gets.strip.to_i
     choice = NycToday::Event.event_types[input-1].downcase
     #
     # NycToday::Event.all[choice]
 
-    NycToday::Event.all.each.with_index(1) do |event, i|
-      if event.event_type.downcase == choice
-        puts "#{i.to_s.rjust(3," ")} | #{event.name}"
-        puts "    | #{event.time} at #{event.venue}"
-        if event.price != " " && event.price != "" && event.price != nil
-          puts "    | #{event.price}"
-          puts
-        else
-          puts
-        end
-      end
-    end
+    # NycToday::Event.all.each.with_index(1) do |event, i|
+    #   if event.event_type.downcase == choice
+    #     puts "#{i.to_s.rjust(3," ")} | #{event.name}"
+    #     puts "    | #{event.time} at #{event.venue}"
+    #     if event.price != " " && event.price != "" && event.price != nil
+    #       puts "    | #{event.price}"
+    #       puts
+    #     else
+    #       puts
+    #     end
+    #   end
+    # end
 
 
 
 
-    # puts "Here are 10 of today's events:"
-    # puts
-    # NycToday::Event.all_sets_sorted[@@set].each.with_index(1) do |event, i|
-    #   puts "#{i.to_s.rjust(3," ")} | #{event.name}"
-    #   puts "    | #{event.time} at #{event.venue}"
+    puts "Here are 10 of today's events:"
+    puts
+    NycToday::Event.sorted_sets[choice].each.with_index(1) do |event, i|
+      puts "#{i.to_s.rjust(3," ")} | #{event.name}"
+      puts "    | #{event.time} at #{event.venue}"
     #   if event.price != " " && event.price != "" && event.price != nil
     #     puts "    | #{event.price}"
     #     puts
@@ -62,8 +62,8 @@ This may take up to a minute..."
     #     puts
     #   end
     #   # puts "      #{event.event_type}"
-    # end
-    selection
+    end
+    # selection
   end
 
   def selection
