@@ -16,10 +16,10 @@ class NycToday::Event
   end
 
   def self.sorted_sets
-    @@sorted_sets = @@all.collect!{|e|[e.event_type]}
-    @@sorted_sets.each do |set|
-      set.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
-    end
+    @@sorted_sets = @@all.group_by{|e|e.event_type}
+    # @@sorted_sets.each do |set|
+    #   set.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
+    # end
   end
 
   def reset
