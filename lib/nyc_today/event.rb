@@ -16,7 +16,8 @@ class NycToday::Event
   end
 
   def self.sorted_sets
-    @@sorted_sets = @@all.group_by{|e|e.event_type}
+    @@sorted_sets = @@all.sort_by!{|e|e.event_type.length}.group_by{|e|e.event_type}.each{|key, val|val.sort_by!{|e|e.time_stamp}}
+    @@sorted_sets.each{|key, val|val.each_slice(9).to_a}
     # @@sorted_sets.each do |set|
     #   set.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
     # end
@@ -27,7 +28,7 @@ class NycToday::Event
   end
 
   def self.event_types
-    @@all.collect{|event|event.event_type}.uniq!.sort_by!{|e|e.length}
+    @@all.collect{|event|event.event_type}.uniq!
   end
 
   def self.reformat_types

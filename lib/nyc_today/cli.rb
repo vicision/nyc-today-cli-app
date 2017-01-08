@@ -5,7 +5,7 @@ class NycToday::CLI
   def call
     welcome
     NycToday::Scraper.scrape_events
-    # NycToday::Event.reformat_types
+    NycToday::Event.sorted_sets
     list_events
   end
 
