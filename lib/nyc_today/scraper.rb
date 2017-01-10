@@ -31,13 +31,11 @@ class NycToday::Scraper
     NycToday::Event.reformat_types
   end
 
-  def self.scrape_event_pages
-    NycToday::Event.all.each do |event|
-      event_page = Nokogiri::HTML(open(event.event_link))
-      event.price = event_page.css(".ds-ticket-info").text.strip.gsub!(/\s+/, " ")
-      event.event_info = event_page.css(".ds-event-description-inner").text.lstrip.split("<br>")
+  def self.scrape_event_page(event)
+    event_page = Nokogiri::HTML(open(event.event_link))
+    event.price = event_page.css(".ds-ticket-info").text.strip.gsub!(/\s+/, " ")
+    event.event_info = event_page.css(".ds-event-description-inner").text.lstrip.split("<br>")
       # event_info[info_paras] = event.event_info.split("\n")
-    end
   end
 
 end

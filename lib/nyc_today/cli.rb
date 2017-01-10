@@ -32,13 +32,11 @@ This may take a few seconds..."
     puts
     puts "What type of events would you like to see? Please enter a number from the menu above."
     @@type_choice = gets.strip.to_i-1
-
   end
 
 
   def list_events
-    # NycToday::Event.list_events_by_type(input)
-    puts "Here's set #{@@set_no+1} of today's #{NycToday::Event.event_types[@@type_choice]} events by time:"
+    puts "Here's set #{@@set_no+1} of today's #{NycToday::Event.event_types[@@type_choice]} events ordered by time:"
     puts
     NycToday::Event.event_sets(@@type_choice)[@@set_no].each.with_index(1) do |event, i|
       puts "#{i.to_s.rjust(3," ")} | #{event.name}"
@@ -46,13 +44,6 @@ This may take a few seconds..."
       puts
     end
     selection
-
-    # more_events
-    # set_no += 1
-    # list_events
-
-    #NEXT: NEED TO FIGURE OUT MOVING ON TO NEXT SET
-
   end
 
   def selection
@@ -64,7 +55,7 @@ This may take a few seconds..."
         system "clear"
         list_events
       elsif input.to_i > 0
-        event_choice = input.to_i-1
+        event_choice = NycToday::Event.sets[@@set_no][input.to_i-1]
         more_info(event_choice)
         # list_events
         # selection
@@ -84,18 +75,20 @@ This may take a few seconds..."
   end
 
   def more_info(event_choice)
-    this_event = NycToday::Event.all_sets_sorted[@@set][event_choice]
-    if this_event.event_info != " " && this_event.event_info != nil
+    NycToday::Scraper.scrape_event_page(event_choice)
+    # this_event = NycToday::Event.all_sets_sorted[@@set][event_choice]
+    if event_choice.event_info != " " && event_choice.event_info != nil
+      puts event_choice.event_info
     #   system "clear"
     #   this_event.event_info.each do |para|
     #     puts para
     #     puts "\n"
     #     puts "\n"
     #   end
-      this_event.event_info.each do |para|
-        puts para
-        puts ""
-      end
+      # event_choice.event_info.each do |para|
+      #   puts para
+      #   puts ""
+      # end
       # puts "#{reformat_wrapped(this_event.event_info, 66)}"
     else
       system "clear"
