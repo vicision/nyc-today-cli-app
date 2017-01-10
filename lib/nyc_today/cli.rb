@@ -76,8 +76,9 @@ This may take a few seconds..."
 
   def more_info(event_choice)
     NycToday::Scraper.scrape_event_page(event_choice)
-    # this_event = NycToday::Event.all_sets_sorted[@@set][event_choice]
-    if event_choice.event_info != " " && event_choice.event_info != nil
+    if event_choice.event_info != " " && event_choice.event_info != nil && event_choice.event_info != ""
+      puts event_choice.price
+      puts
       puts event_choice.event_info
     #   system "clear"
     #   this_event.event_info.each do |para|
