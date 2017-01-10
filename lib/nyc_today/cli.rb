@@ -1,6 +1,7 @@
 class NycToday::CLI
 
   @@set_no = 0
+  @@type_choice = 0
 
   def call
     welcome
@@ -30,15 +31,16 @@ This may take a few seconds..."
     end
     puts
     puts "What type of events would you like to see? Please enter a number from the menu above."
+    @@type_choice = gets.strip.to_i-1
+
   end
 
 
   def list_events
-    input = gets.strip.to_i-1
     # NycToday::Event.list_events_by_type(input)
-    puts "Here's set #{@@set_no+1} of today's #{NycToday::Event.event_types[input]} events by time:"
+    puts "Here's set #{@@set_no+1} of today's #{NycToday::Event.event_types[@@type_choice]} events by time:"
     puts
-    NycToday::Event.event_sets(input)[@@set_no].each.with_index(1) do |event, i|
+    NycToday::Event.event_sets(@@type_choice)[@@set_no].each.with_index(1) do |event, i|
       puts "#{i.to_s.rjust(3," ")} | #{event.name}"
       puts "    | #{event.time} at #{event.venue}"
       puts
@@ -57,7 +59,7 @@ This may take a few seconds..."
     more_events
     input = gets.strip.downcase
     until @@set_no == NycToday::Event.sets.length-1
-      if input == ""
+      if input == "" or input == " "
         @@set_no += 1
         system "clear"
         list_events
