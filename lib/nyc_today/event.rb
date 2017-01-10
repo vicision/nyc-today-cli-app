@@ -16,11 +16,17 @@ class NycToday::Event
   end
 
   def self.sorted_sets
-    @@sorted_sets = @@all.sort_by!{|e|e.event_type.length}.group_by{|e|e.event_type}.each{|key, val|val.sort_by!{|e|e.time_stamp}}
-    @@sorted_sets.each{|key, val|val.each_slice(9).to_a}
-    # @@sorted_sets.each do |set|
-    #   set.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
-    # end
+  #   @@sorted_sets = []
+  #   @@all.collect do |event|
+  #
+    @@all.sort_by!{|e|e.event_type.length}
+  #   @@sorted_sets.group_by{|e|e.event_type}.each{|type, events|events.sort_by!{|e|e.time_stamp}}
+  #   # @@sorted_sets.collect{|type, events|events.to_a.each_slice(9).to_a}
+  #   # @@sorted_sets.each{}shift
+  #   # @@sorted_sets
+  #   # @@sorted_sets.each do |set|
+  #   #   set.sort_by!{|e|e.time_stamp}.each_slice(10).to_a
+  #   # end
   end
 
   def reset

@@ -1,11 +1,11 @@
 class NycToday::CLI
 
-  @@set = 0
 
   def call
     welcome
     NycToday::Scraper.scrape_events
     NycToday::Event.sorted_sets
+    list_event_types
     list_events
   end
 
@@ -19,18 +19,42 @@ This may take up to a minute..."
     puts
   end
 
-  def list_events
-    counter = 1
+  def list_event_types
     puts "Here are today's event categories:"
     puts
-    NycToday::Event.event_types.each do |event_type|
-      puts "#{counter.to_s.rjust(2," ")} | #{event_type}"
-      counter += 1
+    NycToday::Event.event_types.each.with_index(1) do |event_type, i|
+      puts "#{i.to_s.rjust(2," ")} | #{event_type}"
     end
     puts
     puts "What type of events would you like to see? Please enter a number from the menu above."
-    input = gets.strip.to_i
-    choice = NycToday::Event.event_types[input-1].downcase
+  end
+
+
+  def list_events
+    set = 0
+    input = gets.strip.to_i-1
+    choice = NycToday::Event.event_types[input]
+    event_group = []
+    NycToday::Event.all.each do |event|
+      if event.event_type.downcase == choice.downcase
+        event_group << event
+      end
+    end
+    event_group.sort_by!{|e|e.time_stamp}
+    event_sets = event_group.each_slice(9).to_a
+    puts "Here are 10 of today's #{choice} events by time:"
+    puts
+    event_sets[set].each.with_index(1) do |event, i|
+      puts "#{i.to_s.rjust(3," ")} | #{event.name}"
+      puts "    | #{event.time} at #{event.venue}"
+      puts
+    end
+    more_events
+
+
+
+
+
     #
     # NycToday::Event.all[choice]
 
@@ -50,20 +74,21 @@ This may take up to a minute..."
 
 
 
-    puts "Here are 10 of today's events:"
-    puts
-    NycToday::Event.sorted_sets[choice].each.with_index(1) do |event, i|
-      puts "#{i.to_s.rjust(3," ")} | #{event.name}"
-      puts "    | #{event.time} at #{event.venue}"
-    #   if event.price != " " && event.price != "" && event.price != nil
-    #     puts "    | #{event.price}"
-    #     puts
-    #   else
-    #     puts
+    # puts
+    # NycToday::Event.sorted_sets[input].each do |key, val|
+    #   val.each.with_index(1) do |event, i|
+    #     puts "#{i.to_s.rjust(3," ")} | #{event.name}"
+    #     puts "    | #{event.time} at #{event.venue}"
     #   end
-    #   # puts "      #{event.event_type}"
-    end
-    # selection
+    # #   if event.price != " " && event.price != "" && event.price != nil
+    # #     puts "    | #{event.price}"
+    # #     puts
+    # #   else
+    # #     puts
+    # #   end
+    # #   # puts "      #{event.event_type}"
+    # end
+    # # selection
   end
 
   def selection
