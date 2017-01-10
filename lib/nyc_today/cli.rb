@@ -1,10 +1,11 @@
 class NycToday::CLI
 
+  @@set_no = 0
 
   def call
     welcome
     NycToday::Scraper.scrape_events
-    NycToday::Event.sorted_sets
+    # NycToday::Event.sorted
     list_event_types
     list_events
   end
@@ -13,6 +14,8 @@ class NycToday::CLI
     puts
     puts "Welcome to NYC Today, your guide to live music
 and other events in and around New York City today."
+    puts
+    puts "** Maximize terminal for best experience. **"
     puts
     puts "Please wait while I gather all of today's events.
 This may take a few seconds..."
@@ -31,75 +34,31 @@ This may take a few seconds..."
 
 
   def list_events
-    set_no = 0
     input = gets.strip.to_i-1
-    NycToday::Event.list_events_by_type(input)
-    # choice = NycToday::Event.event_types[input]
-    # event_group = []
-    # NycToday::Event.all.each do |event|
-    #   if event.event_type.downcase == choice.downcase
-    #     event_group << event
-    #   end
-    # end
-    # event_sets = event_group.sort_by!{|e|e.time_stamp}.each_slice(9).to_a
-    puts "Here are 10 of today's #{NycToday::Event.event_types[input]} events by time:"
+    # NycToday::Event.list_events_by_type(input)
+    puts "Here's set #{@@set_no+1} of today's #{NycToday::Event.event_types[input]} events by time:"
     puts
-    event_sets[set_no].each.with_index(1) do |event, i|
+    NycToday::Event.event_sets(input)[@@set_no].each.with_index(1) do |event, i|
       puts "#{i.to_s.rjust(3," ")} | #{event.name}"
       puts "    | #{event.time} at #{event.venue}"
       puts
     end
-    more_events
-    set_no += 1
-    list_events
+    selection
+
+    # more_events
+    # set_no += 1
+    # list_events
 
     #NEXT: NEED TO FIGURE OUT MOVING ON TO NEXT SET
 
   end
 
-
-
-    #
-    # NycToday::Event.all[choice]
-
-    # NycToday::Event.all.each.with_index(1) do |event, i|
-    #   if event.event_type.downcase == choice
-    #     puts "#{i.to_s.rjust(3," ")} | #{event.name}"
-    #     puts "    | #{event.time} at #{event.venue}"
-    #     if event.price != " " && event.price != "" && event.price != nil
-    #       puts "    | #{event.price}"
-    #       puts
-    #     else
-    #       puts
-    #     end
-    #   end
-    # end
-
-
-
-
-    # puts
-    # NycToday::Event.sorted_sets[input].each do |key, val|
-    #   val.each.with_index(1) do |event, i|
-    #     puts "#{i.to_s.rjust(3," ")} | #{event.name}"
-    #     puts "    | #{event.time} at #{event.venue}"
-    #   end
-    # #   if event.price != " " && event.price != "" && event.price != nil
-    # #     puts "    | #{event.price}"
-    # #     puts
-    # #   else
-    # #     puts
-    # #   end
-    # #   # puts "      #{event.event_type}"
-    # end
-    # # selection
-
   def selection
     more_events
     input = gets.strip.downcase
-    until @@set == NycToday::Event.all.length-1
+    until @@set_no == NycToday::Event.sets.length-1
       if input == ""
-        @@set += 1
+        @@set_no += 1
         system "clear"
         list_events
       elsif input.to_i > 0
@@ -122,9 +81,44 @@ This may take a few seconds..."
     puts "Enter the number of any event you'd like to know more about or press Enter for more events."
   end
 
+  def more_info(event_choice)
+    this_event = NycToday::Event.all_sets_sorted[@@set][event_choice]
+    if this_event.event_info != " " && this_event.event_info != nil
+    #   system "clear"
+    #   this_event.event_info.each do |para|
+    #     puts para
+    #     puts "\n"
+    #     puts "\n"
+    #   end
+      this_event.event_info.each do |para|
+        puts para
+        puts ""
+      end
+      # puts "#{reformat_wrapped(this_event.event_info, 66)}"
+    else
+      system "clear"
+      puts "I'm sorry, there is no additional information about this event."
+    end
+    puts
+    puts "Press Enter to return to the list of events."
+    puts
+    input = gets.strip.downcase
+      if input == ""
+        system "clear"
+        list_events
+      end
+  end
+
+  def goodbye
+    system "clear"
+    puts
+    puts "Good-bye! Come back tomorrow for a new list of events."
+    exit
+  end
+
 
   def end_of_list
-    puts "This is the end of today's list of events. Would you like to see them again? (Y/n)"
+    puts "You've reached the end of the list for this type of event. Would you like to see them again? (Y/n)"
     puts
     input = gets.strip.downcase
     if input == "y"
@@ -164,40 +158,6 @@ This may take a few seconds..."
     # puts paragraphs
 	end
 
-  def more_info(event_choice)
-    this_event = NycToday::Event.all_sets_sorted[@@set][event_choice]
-    if this_event.event_info != " " && this_event.event_info != nil
-    #   system "clear"
-    #   this_event.event_info.each do |para|
-    #     puts para
-    #     puts "\n"
-    #     puts "\n"
-    #   end
-      this_event.event_info.each do |para|
-        puts para
-        puts ""
-      end
-      # puts "#{reformat_wrapped(this_event.event_info, 66)}"
-    else
-      system "clear"
-      puts "I'm sorry, there is no additional information about this event."
-    end
-    puts
-    puts "Press Enter to return to the list of events."
-    puts
-    input = gets.strip.downcase
-      if input == ""
-        system "clear"
-        list_events
-      end
-  end
-
-  def goodbye
-    system "clear"
-    puts
-    puts "Good-bye! Come back tomorrow for a new list of events."
-    exit
-  end
 
 
   # def menu
