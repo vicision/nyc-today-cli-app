@@ -30,15 +30,15 @@ class NycToday::Event
   end
 
   def reset
-    @@all.clear!
+    all.clear!
   end
 
   def self.event_types
-    @@all.collect{|event|event.event_type}.uniq!
+    all.collect{|event|event.event_type}.uniq!
   end
 
   def self.reformat_types
-    @@all.each do |event|
+    all.each do |event|
       if event.event_type.include?("Dj")
         event.event_type.sub!("j", "J")
       elsif event.event_type.include?("Food")
@@ -51,6 +51,17 @@ class NycToday::Event
         event.event_type
       end
     end
+  end
+
+  def event_sets(input)
+    choice = event_types[input]
+    event_group = []
+    all.each do |event|
+      if event.event_type.downcase == choice.downcase
+        event_group << event
+      end
+    end
+    event_sets = event_group.sort_by!{|e|e.time_stamp}.each_slice(9).to_a
   end
 
   def self.list_events_by_type(type)

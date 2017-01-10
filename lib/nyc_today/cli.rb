@@ -15,7 +15,7 @@ class NycToday::CLI
 and other events in and around New York City today."
     puts
     puts "Please wait while I gather all of today's events.
-This may take up to a minute..."
+This may take a few seconds..."
     puts
   end
 
@@ -31,27 +31,31 @@ This may take up to a minute..."
 
 
   def list_events
-    set = 0
+    set_no = 0
     input = gets.strip.to_i-1
-    choice = NycToday::Event.event_types[input]
-    event_group = []
-    NycToday::Event.all.each do |event|
-      if event.event_type.downcase == choice.downcase
-        event_group << event
-      end
-    end
-    event_group.sort_by!{|e|e.time_stamp}
-    event_sets = event_group.each_slice(9).to_a
-    puts "Here are 10 of today's #{choice} events by time:"
+    NycToday::Event.list_events_by_type(input)
+    # choice = NycToday::Event.event_types[input]
+    # event_group = []
+    # NycToday::Event.all.each do |event|
+    #   if event.event_type.downcase == choice.downcase
+    #     event_group << event
+    #   end
+    # end
+    # event_sets = event_group.sort_by!{|e|e.time_stamp}.each_slice(9).to_a
+    puts "Here are 10 of today's #{NycToday::Event.event_types[input]} events by time:"
     puts
-    event_sets[set].each.with_index(1) do |event, i|
+    event_sets[set_no].each.with_index(1) do |event, i|
       puts "#{i.to_s.rjust(3," ")} | #{event.name}"
       puts "    | #{event.time} at #{event.venue}"
       puts
     end
     more_events
+    set_no += 1
+    list_events
 
+    #NEXT: NEED TO FIGURE OUT MOVING ON TO NEXT SET
 
+  end
 
 
 
@@ -89,7 +93,6 @@ This may take up to a minute..."
     # #   # puts "      #{event.event_type}"
     # end
     # # selection
-  end
 
   def selection
     more_events

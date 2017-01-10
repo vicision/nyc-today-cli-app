@@ -29,7 +29,6 @@ class NycToday::Scraper
       end
     end
     NycToday::Event.reformat_types
-    # scrape_event_pages
   end
 
   def self.scrape_event_pages
