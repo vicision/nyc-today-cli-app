@@ -12,6 +12,7 @@ class NycToday::CLI
   end
 
   def welcome
+    system "clear"
     puts
     puts "Welcome to NYC Today, your guide to live music
 and other events in and around New York City today."
@@ -24,6 +25,7 @@ This may take a few seconds..."
   end
 
   def list_event_types
+    system "clear"
     puts "Here are today's event categories:"
     puts
     NycToday::Event.event_types.each.with_index(1) do |event_type, i|
@@ -36,6 +38,7 @@ This may take a few seconds..."
 
 
   def list_events
+    system "clear"
     puts "Here's set #{@@set_no+1} of today's #{NycToday::Event.event_types[@@type_choice]} events ordered by time:"
     puts
     NycToday::Event.event_sets(@@type_choice)[@@set_no].each.with_index(1) do |event, i|
@@ -55,6 +58,7 @@ This may take a few seconds..."
         system "clear"
         list_events
       elsif input.to_i > 0
+        system "clear"
         event_choice = NycToday::Event.sets[@@set_no][input.to_i-1]
         more_info(event_choice)
         # list_events
@@ -62,6 +66,7 @@ This may take a few seconds..."
       elsif input == "exit"
         goodbye
       else
+        system "clear"
         puts "I'm sorry, I didn't understand what you typed. Please try again."
         sleep(2.5)
         list_events
@@ -77,6 +82,7 @@ This may take a few seconds..."
   def more_info(event_choice)
     NycToday::Scraper.scrape_event_page(event_choice)
     if event_choice.event_info != " " && event_choice.event_info != nil && event_choice.event_info != ""
+      system "clear"
       puts event_choice.price
       puts
       puts event_choice.event_info

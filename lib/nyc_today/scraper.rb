@@ -34,13 +34,11 @@ class NycToday::Scraper
   def self.scrape_event_page(event)
     event_page = Nokogiri::HTML(open(event.event_link))
     event.price = event_page.css(".ds-ticket-info").text.strip.gsub!(/\s+/, " ")
-    if event_page.at(".ds-event-description-inner") == true
+    if event_page.at(".ds-event-description-inner")
       event.event_info = event_page.css(".ds-event-description-inner").text.lstrip.split("<br>")
     else
       event.event_info = nil
     end
-##ABOVE IS NOT WORKING, SETS ALL TO NIL. FIX!!
-
       # event_info[info_paras] = event.event_info.split("\n")
   end
 
