@@ -39,7 +39,9 @@ This may take a few seconds..."
 
   def list_events
     system "clear"
-    puts "Here's set #{@@set_no+1} of today's #{NycToday::Event.event_types[@@type_choice]} events ordered by time:"
+    page_count =   NycToday::Event.event_sets(@@type_choice).count
+    category = NycToday::Event.event_types[@@type_choice]
+    puts "Here's page #{@@set_no+1}/#{page_count} of today's #{category} events ordered by time:"
     puts
     NycToday::Event.event_sets(@@type_choice)[@@set_no].each.with_index(1) do |event, i|
       puts "#{i.to_s.rjust(3," ")} | #{event.name}"
@@ -61,8 +63,6 @@ This may take a few seconds..."
         system "clear"
         event_choice = NycToday::Event.sets[@@set_no][input.to_i-1]
         more_info(event_choice)
-        # list_events
-        # selection
       elsif input == "exit"
         goodbye
       else
@@ -83,7 +83,7 @@ This may take a few seconds..."
     NycToday::Scraper.scrape_event_page(event_choice)
     if event_choice.event_info != " " && event_choice.event_info != nil && event_choice.event_info != ""
       system "clear"
-      puts event_choice.price
+      puts event_choice.price unless event_choice.price == nil
       puts
       puts event_choice.event_info
     #   system "clear"
@@ -115,6 +115,8 @@ This may take a few seconds..."
     system "clear"
     puts
     puts "Good-bye! Come back tomorrow for a new list of events."
+    sleep 1.5
+    system "clear"
     exit
   end
 
@@ -124,7 +126,7 @@ This may take a few seconds..."
     puts
     input = gets.strip.downcase
     if input == "y"
-      @@set = 0
+      @@set_no = 0
       list_events
     elsif input == "n"
       goodbye

@@ -19,7 +19,11 @@ class NycToday::Scraper
       page.css(".event-card").each do |event|
         url_end = event.css("a").attribute("href").value
         event_hash = {}
-        event_hash[:name] = event.css(".ds-listing-event-title-text").text.strip
+        if event.css(".ds-byline").text != ""
+          event_hash[:name] = event.css(".ds-byline").text.lstrip + " " + event.css(".ds-listing-event-title-text").text.lstrip#.gsub!(/\s+/, " ")#.lstrip.rstrip
+        else
+          event_hash[:name] = event.css(".ds-listing-event-title-text").text.lstrip
+        end
         event_hash[:venue] = event.css(".ds-venue-name").text.gsub!(/\s+/, " ").strip
         event_hash[:time] = event.css(".dtstart").text.gsub!(/\s+/, " ").strip
         event_hash[:time_stamp] = Time.parse(event_hash[:time])
