@@ -18,10 +18,10 @@ class NycToday::CLI
     puts "Please wait a few seconds while I gather today's events."
     puts "(Maximize your terminal for the best experience)"
     puts
+    system "clear"
   end
 
   def list_event_types
-    system "clear"
     puts "Here are today's event categories:"
     puts
     NycToday::Event.event_types.each.with_index(1) do |event_type, i|
@@ -30,10 +30,16 @@ class NycToday::CLI
     puts
     puts "What type of events would you like to see? Please enter a number from the menu above or type 'exit' to leave the program."
     input = gets.strip
-    if input.to_i > 0
+    if input.to_i > 0 && input.to_i <= NycToday::Event.event_types.count
       @@type_choice = input.to_i-1
     elsif input == "exit"
       goodbye
+    else
+      system "clear"
+      puts "I'm sorry, that is not an option. Please choose a number from the menu."
+      sleep 1
+      system "clear"
+      list_event_types
     end
     list_events
   end
@@ -51,21 +57,28 @@ class NycToday::CLI
         puts "    | #{event.time} at #{event.venue}"
         puts
       end
+    else
+      end_of_list
     end
     selection
   end
 
+  def error
+    puts "I'm sorry, I didn't understand what you typed. Please try again."
+  end
+
+
   def selection
     more_events
     input = gets.strip.downcase
-    until @@set_no == NycToday::Event.sets.length+1
+    # until @@set_no == NycToday::Event.sets.length+1
       if input == "" or input == " "
         @@set_no += 1
         system "clear"
         list_events
       elsif input.to_i > 0
         system "clear"
-        event_choice = NycToday::Event.sets[@@set_no][input.to_i-1]
+        event_choice = NycToday::Event.sets[@@set_no[input.to_i-1]]
         more_info(event_choice)
       elsif input == "menu"
         reset_menu
@@ -74,15 +87,16 @@ class NycToday::CLI
         list_events
       else
         system "clear"
-        puts "I'm sorry, I didn't understand what you typed. Please try again."
+        error
         sleep 2
         list_events
       end
       reset_menu
-    end
+    # end
   end
 
   def reset_menu
+    system "clear"
     NycToday::Event.reset_sets
     @@set_no = 0
     @@type_choice = 0
@@ -99,21 +113,7 @@ class NycToday::CLI
     if event_choice.event_info != " " && event_choice.event_info != nil && event_choice.event_info != ""
       system "clear"
       puts "Price: #{event_choice.price}\n" + "\n" unless event_choice.price == nil
-      event_choice.event_info.each do |para|
-        puts para + "\n"
-        # puts "\n"
-      end
-    #   system "clear"
-    #   this_event.event_info.each do |para|
-    #     puts para
-    #     puts "\n"
-    #     puts "\n"
-    #   end
-      # event_choice.event_info.each do |para|
-      #   puts para
-      #   puts ""
-      # end
-      # puts "#{reformat_wrapped(this_event.event_info, 66)}"
+      puts event_choice.event_info
     else
       system "clear"
       puts "I'm sorry, there is no additional information about this event."
@@ -144,7 +144,7 @@ class NycToday::CLI
       @@set_no = 0
       list_events
     elsif input == "n"
-      goodbye
+      reset_menu
     end
   end
 
