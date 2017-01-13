@@ -51,7 +51,15 @@ class NycToday::Event
         event_group << event
       end
     end
-    @@sets = event_group.sort_by!{|e|e.time_stamp}.each_slice(5).to_a
+    @@sets = event_group.sort_by!{|e|e.time_stamp}
+    midnight = []
+    @@sets.reject! do |e|
+      if (e.time.include? "12") && (e.time.include? "AM")
+        midnight << e
+      end
+    end
+    midnight.sort_by!{|e|e.time_stamp}
+    @@sets.push(*midnight).each_slice(5).to_a
   end
 
 

@@ -20,7 +20,7 @@ class NycToday::Scraper
         url_end = event.css("a").attribute("href").value
         event_hash = {}
         if event.css(".ds-byline").text != ""
-          event_hash[:name] = event.css(".ds-byline").text.lstrip + " " + event.css(".ds-listing-event-title-text").text.lstrip#.gsub!(/\s+/, " ")#.lstrip.rstrip
+          event_hash[:name] = event.css(".ds-byline").text.lstrip + " " + event.css(".ds-listing-event-title-text").text.lstrip
         else
           event_hash[:name] = event.css(".ds-listing-event-title-text").text.lstrip
         end
@@ -39,7 +39,7 @@ class NycToday::Scraper
     event_page = Nokogiri::HTML(open(event.event_link))
     event.price = event_page.css(".ds-ticket-info").text.strip.gsub!(/\s+/, " ")
     if event_page.at(".ds-event-description-inner")
-      event.event_info = event_page.css(".ds-event-description-inner").text.lstrip.split("<br>")
+      event.event_info = event_page.css(".ds-event-description-inner").text.lstrip.gsub!(/[\s+][\z]/).split("\n")
     else
       event.event_info = nil
     end
