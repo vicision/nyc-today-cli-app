@@ -35,6 +35,7 @@ class NycToday::CLI
     elsif input == "exit"
       goodbye
     end
+    list_events
   end
 
 
@@ -57,7 +58,7 @@ class NycToday::CLI
   def selection
     more_events
     input = gets.strip.downcase
-    until @@set_no > NycToday::Event.sets.length-1
+    until @@set_no == NycToday::Event.sets.length+1
       if input == "" or input == " "
         @@set_no += 1
         system "clear"
@@ -67,9 +68,7 @@ class NycToday::CLI
         event_choice = NycToday::Event.sets[@@set_no][input.to_i-1]
         more_info(event_choice)
       elsif input == "menu"
-        NycToday::Event.reset_sets
-        @@set_no = 0
-        list_event_types
+        reset_menu
       elsif input == "back"
         @@set_no -= 1
         list_events
@@ -79,8 +78,15 @@ class NycToday::CLI
         sleep 2
         list_events
       end
+      reset_menu
     end
-    end_of_list
+  end
+
+  def reset_menu
+    NycToday::Event.reset_sets
+    @@set_no = 0
+    @@type_choice = 0
+    list_event_types
   end
 
   def more_events
