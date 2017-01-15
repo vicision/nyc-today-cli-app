@@ -7,7 +7,7 @@ class NycToday::CLI
     welcome
     NycToday::Scraper.scrape_events
     list_event_types
-    list_events
+    # list_events
   end
 
   def welcome
@@ -16,8 +16,7 @@ class NycToday::CLI
     puts "and other events in and around New York City today!"
     puts
     puts "Please wait a few seconds while I gather today's events."
-    puts "(Maximize your terminal for the best experience)"
-    puts
+    puts "For best results, maximize the terminal."
     system "clear"
   end
 
@@ -28,11 +27,13 @@ class NycToday::CLI
       puts "#{i.to_s.rjust(2," ")} | #{event_type}"
     end
     puts
-    puts "What type of events would you like to see? Please enter a number from the menu above or type 'exit' to leave the program."
+    puts "-------------------------------------------------------------"
+    puts "* Enter a number for the type of event you would like to see."
+    puts "* Type 'exit' to leave the program."
     input = gets.strip
     if input.to_i > 0 && input.to_i <= NycToday::Event.event_types.count
       @@type_choice = input.to_i-1
-    elsif input == "exit"
+    elsif input.downcase == "exit"
       goodbye
     else
       system "clear"
@@ -67,32 +68,67 @@ class NycToday::CLI
     puts "I'm sorry, I didn't understand what you typed. Please try again."
   end
 
-
   def selection
     more_events
     input = gets.strip.downcase
-    # until @@set_no == NycToday::Event.sets.length+1
-      if input == "" or input == " "
-        @@set_no += 1
+    if input == "" or input == " "
+      @@set_no += 1
+      system "clear"
+      list_events
+    elsif input.to_i > 0
+      event = NycToday::Event.sets[@@set_no][input.to_i-1]
+      NycToday::Scraper.scrape_event_page(event)
+      more_info(event)
+    elsif input == "menu"
+      reset_menu
+    elsif input == "back"
+      @@set_no -= 1
+      list_events
+    else
+      system "clear"
+      error
+      sleep 2
+      list_events
+    end
+  end
+
+  def more_events
+    puts "--------------------------------------------------------------"
+    puts "* Enter the number of any event you'd like to know more about."
+    puts "* Press Enter/Return for more events"
+    puts "* Type 'menu' to return to the main menu or 'back' to go back"
+  end
+
+  def more_info(event)
+    if event.event_info != " " && event.event_info != nil && event.event_info != ""
+      system "clear"
+      puts "Price: #{event.price}\n" + "\n" unless event.price == nil
+      puts event.event_info
+    else
+      system "clear"
+      puts "I'm sorry, there is no additional information about this event."
+    end
+    puts
+    puts "--------------------------------------------"
+    puts "Press Enter to return to the list of events."
+    input = gets.strip.downcase
+      if input == ""
         system "clear"
-        list_events
-      elsif input.to_i > 0
-        system "clear"
-        event_choice = NycToday::Event.sets[@@set_no[input.to_i-1]]
-        more_info(event_choice)
-      elsif input == "menu"
-        reset_menu
-      elsif input == "back"
-        @@set_no -= 1
-        list_events
-      else
-        system "clear"
-        error
-        sleep 2
         list_events
       end
+  end
+
+  def end_of_list
+    puts "You've reached the end of the list for this type of event. Would you like to see them again? (Y/n)"
+    input = gets.strip.downcase
+    if input == "y"
+      @@set_no = 0
+      list_events
+    elsif input == "n"
+      puts "Returning to main menu..."
+      sleep 1
       reset_menu
-    # end
+    end
   end
 
   def reset_menu
@@ -101,30 +137,6 @@ class NycToday::CLI
     @@set_no = 0
     @@type_choice = 0
     list_event_types
-  end
-
-  def more_events
-    puts "Enter the number of any event you'd like to know more about."
-    puts "Press Enter for more events, return to the main menu by typing 'menu' or go back by typing 'back'."
-  end
-
-  def more_info(event_choice)
-    NycToday::Scraper.scrape_event_page(event_choice)
-    if event_choice.event_info != " " && event_choice.event_info != nil && event_choice.event_info != ""
-      system "clear"
-      puts "Price: #{event_choice.price}\n" + "\n" unless event_choice.price == nil
-      puts event_choice.event_info
-    else
-      system "clear"
-      puts "I'm sorry, there is no additional information about this event."
-      puts
-    end
-    puts "Press Enter to return to the list of events."
-    input = gets.strip.downcase
-      if input == ""
-        system "clear"
-        list_events
-      end
   end
 
   def goodbye
@@ -136,17 +148,6 @@ class NycToday::CLI
   end
 
 
-  def end_of_list
-    puts "You've reached the end of the list for this type of event. Would you like to see them again? (Y/n)"
-    puts
-    input = gets.strip.downcase
-    if input == "y"
-      @@set_no = 0
-      list_events
-    elsif input == "n"
-      reset_menu
-    end
-  end
 
   def reformat_wrapped(text, width=78)
 
@@ -176,25 +177,5 @@ class NycToday::CLI
     #end
     # puts paragraphs
 	end
-
-
-
-  # def menu
-  #   input = nil
-  #   until input == "exit"
-  #     input = gets.strip.downcase
-  #     if input.to_i > 0
-  #       this_event = @events[input.to_i-1]
-  #       puts "#{this_event.name} at #{this_event.venue} - #{this_event.time} - #{this_event.price}"
-  #     elsif input == "list"
-  #       list_events
-  #     elsif input == "exit"
-  #       goodbye
-  #       exit
-  #     else
-  #       puts "Input not valid: please enter a number from the list above"
-  #     end
-  #   end
-  # end
 
 end

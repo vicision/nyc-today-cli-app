@@ -39,7 +39,7 @@ class NycToday::Scraper
     event_page = Nokogiri::HTML(open(event.event_link))
     event.price = event_page.css(".ds-ticket-info").text.strip.gsub!(/\s+/, " ")
     if event_page.at(".ds-event-description-inner")
-      event.event_info = event_page.css(".ds-event-description-inner").text.lstrip.gsub!(/$/, "\n").to_s
+      event.event_info = event_page.css(".ds-event-description-inner").text.lstrip.rstrip.gsub!(/$/, "\n").to_s
     else
       event.event_info = nil
     end
