@@ -103,7 +103,8 @@ class NycToday::CLI
     if event.event_info != " " && event.event_info != nil && event.event_info != ""
       system "clear"
       puts "Price: #{event.price}\n" + "\n" unless event.price == nil
-      puts event.event_info
+      puts
+      puts wrap(event.event_info, 80)
     else
       system "clear"
       puts "I'm sorry, there is no additional information about this event."
@@ -125,6 +126,7 @@ class NycToday::CLI
       @@set_no = 0
       list_events
     elsif input == "n"
+      puts
       puts "Returning to main menu..."
       sleep 1
       reset_menu
@@ -147,35 +149,12 @@ class NycToday::CLI
     exit
   end
 
-
-
-  def reformat_wrapped(text, width=78)
-
-    paragraphs = []
-    lines = []
-	  line = ""
-
-
-	  # text.split("n/").each do |parag|
-    #   paragraphs << ""
-    #   paragraphs << parag
-    #   paragraphs << ""
-
-      # paragraphs.each do |word|
-
-	  #   if line.size + word.size >= width
-	  #     lines << line
-	  #     line = word
-	  #   elsif line.empty?
-	  #    line = word
-	  #   else
-	  #    line << " " << word
-	  #  end
-	  #  end
-	  #  lines << line if line
-	  #  lines.join "\n"
-    #end
-    # puts paragraphs
-	end
+  def wrap(text, width=80)
+    paragraphs = text.split("\n")
+    wrapped = paragraphs.collect do |para|
+  	  para.gsub(/(.{1,#{width}})(\s+|\Z)/, "\\1\n")
+    end
+    wrapped
+  end
 
 end
