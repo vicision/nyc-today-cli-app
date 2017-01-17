@@ -58,14 +58,12 @@ class NycToday::Event
   def self.midnight_fix
     midnight = []
     @@sets.reject! do |e|
-      if (e.time.include? "12") && (e.time.include? "AM") || (e.time.include? "1:") && (e.time.include? "AM")
+      if e.time_stamp.to_s[11].to_i == 0 && e.time_stamp.to_s[12].to_i < 7
         midnight << e
       end
     end
     midnight.sort_by!{|e|e.time_stamp}
     @@sets = @@sets.push(*midnight).each_slice(5).to_a
   end
-
-
 
 end
