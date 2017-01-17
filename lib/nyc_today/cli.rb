@@ -53,15 +53,19 @@ class NycToday::CLI
     unless @@set_no+1 > page_count
       puts "Here's page #{@@set_no+1}/#{page_count} of today's #{category} events ordered by time:"
       puts
-      NycToday::Event.event_sets(@@type_choice)[@@set_no].each.with_index(1) do |event, i|
-        puts "#{i.to_s.rjust(3," ")} | #{event.name}"
-        puts "    | #{event.time} at #{event.venue}"
-        puts
-      end
+      event_entry
     else
       end_of_list
     end
     selection
+  end
+
+  def event_entry
+    NycToday::Event.event_sets(@@type_choice)[@@set_no].each.with_index(1) do |event, i|
+      puts "#{i.to_s.rjust(3," ")} | #{event.name}"
+      puts "    | #{event.time} at #{event.venue}"
+      puts
+    end
   end
 
   def error
@@ -100,7 +104,7 @@ class NycToday::CLI
   end
 
   def more_info(event)
-    if event.event_info != " " && event.event_info != nil && event.event_info != ""
+    if event.event_info.strip != " " && event.event_info != nil && event.event_info != ""
       system "clear"
       puts "Price: #{event.price}\n" + "\n" unless event.price == nil
       puts
@@ -109,14 +113,20 @@ class NycToday::CLI
       system "clear"
       puts "I'm sorry, there is no additional information about this event."
     end
+    return_to_menu
+  end
+
+  def return_to_menu
     puts
     puts "--------------------------------------------"
     puts "Press Enter to return to the list of events."
     input = gets.strip.downcase
-      if input == ""
-        system "clear"
-        list_events
-      end
+    if input == ""
+      system "clear"
+      list_events
+    else
+      error
+    end
   end
 
   def end_of_list
