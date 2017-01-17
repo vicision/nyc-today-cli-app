@@ -104,7 +104,7 @@ class NycToday::CLI
   end
 
   def more_info(event)
-    if event.event_info.strip != " " && event.event_info != nil && event.event_info != ""
+    if event.event_info != " " && event.event_info != nil && event.event_info != ""
       system "clear"
       puts "Price: #{event.price}\n" + "\n" unless event.price == nil
       puts
@@ -125,7 +125,9 @@ class NycToday::CLI
       system "clear"
       list_events
     else
+      system "clear"
       error
+      return_to_menu
     end
   end
 
