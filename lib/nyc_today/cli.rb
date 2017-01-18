@@ -7,7 +7,6 @@ class NycToday::CLI
     welcome
     NycToday::Scraper.scrape_events
     list_event_types
-    # list_events
   end
 
   def welcome
@@ -48,9 +47,9 @@ class NycToday::CLI
 
   def list_events
     system "clear"
-    page_count = NycToday::Event.event_sets(@@type_choice).count
-    category = NycToday::Event.event_types[@@type_choice]
-    unless @@set_no+1 > page_count
+    page_count
+    category
+    if @@set_no+1 <= page_count
       puts "Here's page #{@@set_no+1}/#{page_count} of today's #{category} events ordered by time:"
       puts
       event_entry
@@ -58,6 +57,14 @@ class NycToday::CLI
       end_of_list
     end
     selection
+  end
+
+  def page_count
+    NycToday::Event.event_sets(@@type_choice).count
+  end
+
+  def category
+    NycToday::Event.event_types[@@type_choice]
   end
 
   def event_entry
@@ -70,6 +77,8 @@ class NycToday::CLI
 
   def error
     puts "I'm sorry, I didn't understand what you typed. Please try again."
+    sleep 1
+    system "clear"
   end
 
   def selection
@@ -100,11 +109,11 @@ class NycToday::CLI
     puts "--------------------------------------------------------------"
     puts "* Enter the number of any event you'd like to know more about."
     puts "* Press Enter/Return for more events"
-    puts "* Type 'menu' to return to the main menu or 'back' to go back"
+    puts "* Type 'menu' to return to the main menu, or type 'back' or 'exit'."
   end
 
   def more_info(event)
-    if event.event_info != " " && event.event_info != nil && event.event_info != ""
+    if event.event_info != nil
       system "clear"
       puts "Price: #{event.price}\n" + "\n" unless event.price == nil
       puts
@@ -119,15 +128,14 @@ class NycToday::CLI
   def return_to_menu
     puts
     puts "--------------------------------------------"
-    puts "Press Enter to return to the list of events."
+    puts "* Press Enter to return to the list of events."
+    puts "* Type 'exit' to leave the program."
     input = gets.strip.downcase
-    if input == ""
-      system "clear"
-      list_events
+    if input == "exit"
+      goodbye
     else
       system "clear"
-      error
-      return_to_menu
+      list_events
     end
   end
 
@@ -142,6 +150,9 @@ class NycToday::CLI
       puts "Returning to main menu..."
       sleep 1
       reset_menu
+    else
+      error
+      end_of_list
     end
   end
 
