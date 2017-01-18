@@ -22,13 +22,22 @@ class NycToday::CLI
   def list_event_types
     puts "Here are today's event categories:"
     puts
-    NycToday::Event.event_types.each.with_index(1) do |event_type, i|
-      puts "#{i.to_s.rjust(2," ")} | #{event_type}"
-    end
+    type_entry
     puts
     puts "-------------------------------------------------------------"
     puts "* Enter a number for the type of event you would like to see."
     puts "* Type 'exit' to leave the program."
+    choose_type
+    list_events
+  end
+
+  def type_entry
+    NycToday::Event.event_types.each.with_index(1) do |event_type, i|
+      puts "#{i.to_s.rjust(2," ")} | #{event_type}"
+    end
+  end
+
+  def choose_type
     input = gets.strip
     if input.to_i > 0 && input.to_i <= NycToday::Event.event_types.count
       @@type_choice = input.to_i-1
@@ -41,9 +50,7 @@ class NycToday::CLI
       system "clear"
       list_event_types
     end
-    list_events
   end
-
 
   def list_events
     system "clear"
@@ -90,13 +97,15 @@ class NycToday::CLI
       list_events
     elsif input.to_i > 0
       event = NycToday::Event.sets[@@set_no][input.to_i-1]
-      NycToday::Scraper.scrape_event_page(event)
+      NycToday::Scraper.scrape_event_page(event) unless event.event_info != nil
       more_info(event)
     elsif input == "menu"
       reset_menu
     elsif input == "back"
       @@set_no -= 1
       list_events
+    elsif input == "exit"
+      goodbye
     else
       system "clear"
       error
@@ -108,16 +117,16 @@ class NycToday::CLI
   def more_events
     puts "--------------------------------------------------------------"
     puts "* Enter the number of any event you'd like to know more about."
-    puts "* Press Enter/Return for more events"
+    puts "* Press Enter for more events"
     puts "* Type 'menu' to return to the main menu, or type 'back' or 'exit'."
   end
 
   def more_info(event)
-    if event.event_info != nil
+    if event.event_info != nil || event.price != nil
       system "clear"
-      puts "Price: #{event.price}\n" + "\n" unless event.price == nil
-      puts
-      puts wrap(event.event_info, 80)
+      puts "--------------------------------------------------------------"
+      puts "Ticket info: #{event.price}\n" + "\n" unless event.price == nil
+      puts wrap(event.event_info, 80) unless event.event_info == nil
     else
       system "clear"
       puts "I'm sorry, there is no additional information about this event."
@@ -140,7 +149,7 @@ class NycToday::CLI
   end
 
   def end_of_list
-    puts "You've reached the end of the list for this type of event. Would you like to see them again? (Y/n)"
+    puts "You've reached the end of the #{category} events list. Would you like to see it again? (Y/n)"
     input = gets.strip.downcase
     if input == "y"
       @@set_no = 0

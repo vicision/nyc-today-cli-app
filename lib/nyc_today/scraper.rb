@@ -25,7 +25,7 @@ class NycToday::Scraper
         event_hash[:event_link] = @@main_url + url_end
         event_hash[:event_type] = event.attr("class").sub!("ds-listing event-card ds-event-category-", "").split("-").map(&:capitalize).join(" ")
         if event.css(".ds-byline").text != ""
-          event_hash[:name] = event.css(".ds-byline").text.lstrip + " " + event.css(".ds-listing-event-title-text").text.lstrip
+          event_hash[:name] = event.css(".ds-byline").text.lstrip + ": " + event.css(".ds-listing-event-title-text").text.lstrip
         else
           event_hash[:name] = event.css(".ds-listing-event-title-text").text.lstrip
         end
