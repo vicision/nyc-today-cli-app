@@ -11,7 +11,7 @@ class NycToday::CLI
 
   def welcome
     system "clear"
-    puts "Welcome to NYC Today, your guide to live music"
+    puts "\nWelcome to NYC Today, your guide to live music"
     puts "and other events in and around New York City today!\n\n"
     puts "Please wait a few seconds while I gather today's events."
     puts "For best results, maximize the terminal."
@@ -19,7 +19,7 @@ class NycToday::CLI
   end
 
   def list_event_types
-    puts "Here are today's event categories:\n\n"
+    puts "\nHere are today's event categories:\n\n"
     type_entry
     puts "\n-------------------------------------------------------------"
     puts "* Enter a number for the type of event you would like to see."
@@ -54,7 +54,7 @@ class NycToday::CLI
     page_count
     category
     if @@set_no+1 <= page_count
-      puts "Here's page #{@@set_no+1}/#{page_count} of today's #{category} events ordered by time:\n\n"
+      puts "\nHere's page #{@@set_no+1}/#{page_count} of today's #{category} events ordered by time:\n\n"
       event_entry
     else
       end_of_list
@@ -88,7 +88,6 @@ class NycToday::CLI
     input = gets.strip.downcase
     if input == "" or input == " "
       @@set_no += 1
-      system "clear"
       list_events
     elsif input.to_i > 0
       event = NycToday::Event.sets[@@set_no][input.to_i-1]
@@ -97,8 +96,13 @@ class NycToday::CLI
     elsif input == "menu"
       reset_menu
     elsif input == "back"
-      @@set_no -= 1
-      list_events
+      if @@set_no >= 1
+        @@set_no -= 1
+        list_events
+      else
+        reset_menu
+      end
+      puts
     elsif input == "exit"
       goodbye
     else
@@ -143,12 +147,12 @@ class NycToday::CLI
   end
 
   def end_of_list
-    puts "You've reached the end of the #{category} events list. Would you like to see it again? (Y/n)\n\n"
+    puts "You've reached the end of the #{category} events list. Would you like to see it again? (Y/n)"
     input = gets.strip.downcase
-    if input == "y"
+    if input == "y" || input == "yes"
       @@set_no = 0
       list_events
-    elsif input == "n"
+    elsif input == "n" || input == "no"
       puts "\nReturning to main menu..."
       sleep 1.25
       reset_menu
