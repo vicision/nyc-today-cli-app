@@ -4,28 +4,41 @@ class NycToday::CLI
   @@type_choice = 0
 
   def call
-    welcome
+    puts welcome
     NycToday::Scraper.scrape_events
     list_event_types
   end
 
   def welcome
     system "clear"
-    puts "\nWelcome to NYC Today, your guide to live music"
-    puts "and other events in and around New York City today!\n\n"
-    puts "Please wait a few seconds while I gather today's events."
-    puts "For best results, maximize the terminal."
-    system "clear"
+    <<~HEREDOC
+
+      Welcome to NYC Today, your guide to live music
+      and other events in and around New York City today!
+
+      Please wait a few seconds while I gather today's events.
+
+      For best results, maximize the terminal.
+
+    HEREDOC
   end
 
   def list_event_types
+    system "clear"
     puts "\nHere are today's event categories:\n\n"
     type_entry
-    puts "\n-------------------------------------------------------------"
-    puts "* Enter a number for the type of event you would like to see."
-    puts "* Type 'exit' to leave the program."
+    puts menu_bottom
     choose_type
     list_events
+  end
+
+  def menu_bottom
+    <<~HEREDOC
+
+      -------------------------------------------------------------
+      * Enter a number for the type of event you would like to see.
+      * Type 'exit' to leave the program.
+    HEREDOC
   end
 
   def type_entry
@@ -84,7 +97,7 @@ class NycToday::CLI
   end
 
   def selection
-    more_events
+    puts more_events
     input = gets.strip.downcase
     if input == "" or input == " "
       @@set_no += 1
@@ -114,10 +127,12 @@ class NycToday::CLI
   end
 
   def more_events
-    puts "-------------------------------------------------------------------"
-    puts "* Enter the number of any event you'd like to know more about."
-    puts "* Press Enter for more events"
-    puts "* Type 'menu' to return to the main menu, or type 'back' or 'exit'."
+    <<~HEREDOC
+      -------------------------------------------------------------------
+      * Enter the number of any event you'd like to know more about"
+      * Press Enter for more events
+      * Type 'menu' to return to the main menu, or type 'back' or 'exit'
+    HEREDOC
   end
 
   def more_info(event)
@@ -134,9 +149,7 @@ class NycToday::CLI
   end
 
   def return_to_menu
-    puts "\n--------------------------------------------------------------------------------"
-    puts "* Press Enter to return to the list of events."
-    puts "* Type 'exit' to leave the program."
+    puts event_info_bottom
     input = gets.strip.downcase
     if input == "exit"
       goodbye
@@ -146,8 +159,17 @@ class NycToday::CLI
     end
   end
 
+  def event_info_bottom
+    <<~HEREDOC
+
+      --------------------------------------------------------------------------------
+      * Press Enter to return to the list of events
+      * Type 'exit' to leave the program
+    HEREDOC
+  end
+
   def end_of_list
-    puts "You've reached the end of the #{category} events list. Would you like to see it again? (Y/n)"
+    puts "\nYou've reached the end of the #{category} events list. Would you like to see it again? (Y/n)"
     input = gets.strip.downcase
     if input == "y" || input == "yes"
       @@set_no = 0
