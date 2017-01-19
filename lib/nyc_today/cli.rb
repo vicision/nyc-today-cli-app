@@ -13,8 +13,7 @@ class NycToday::CLI
     system "clear"
     <<~HEREDOC
 
-      Welcome to NYC Today, your guide to live music
-      and other events in and around New York City today!
+      Welcome to NYC Today-- your guide to today's events in and around New York City!
 
       Please wait a few seconds while I gather today's events.
 
@@ -202,7 +201,7 @@ class NycToday::CLI
 
   def goodbye
     system "clear"
-    puts "Good-bye! Come back tomorrow for a new list of events."
+    puts "\nGood-bye! Come back tomorrow for a new list of events."
     sleep 1.25
     system "clear"
     exit
