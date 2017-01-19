@@ -128,7 +128,7 @@ class NycToday::CLI
   def more_events
     <<~HEREDOC
       -------------------------------------------------------------------
-      * Enter the number of any event you'd like to know more about"
+      * Enter the number of any event you'd like to know more about
       * Press Enter for more events
       * Type 'menu' to return to the main menu, or type 'back' or 'exit'
     HEREDOC
