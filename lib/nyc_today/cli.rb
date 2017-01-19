@@ -148,6 +148,14 @@ class NycToday::CLI
     return_to_menu
   end
 
+  def wrap(text, width=80)
+    paragraphs = text.split("\n")
+    wrapped = paragraphs.collect do |para|
+      para.gsub(/(.{1,#{width}})(\s+|\Z)/, "\\1\n")
+    end
+    wrapped
+  end
+
   def return_to_menu
     puts event_info_bottom
     input = gets.strip.downcase
@@ -198,14 +206,6 @@ class NycToday::CLI
     sleep 1.25
     system "clear"
     exit
-  end
-
-  def wrap(text, width=80)
-    paragraphs = text.split("\n")
-    wrapped = paragraphs.collect do |para|
-  	  para.gsub(/(.{1,#{width}})(\s+|\Z)/, "\\1\n")
-    end
-    wrapped
   end
 
 end
