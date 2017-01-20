@@ -17,7 +17,7 @@ class NycToday::CLI
 
       Please wait a few seconds while I gather today's events.
 
-      For best results, maximize the terminal.
+      For the best experience, maximize the terminal.
 
     HEREDOC
   end
