@@ -50,7 +50,7 @@ class NycToday::Event
       event.event_type.downcase == choice.downcase ? event_group << event : nil
     end
     @@sets = event_group.sort_by!{|e|e.time_stamp}
-    midnight_fix
+    sort_events
   end
 
   def self.midnight_fix
@@ -58,8 +58,11 @@ class NycToday::Event
     @@sets.reject! do |e|
       e.time_stamp.to_s[11].to_i == 0 && e.time_stamp.to_s[12].to_i < 7 ? midnight << e : nil
     end
-    midnight.sort_by!{|e|e.time_stamp}
-    @@sets = @@sets.push(*midnight).each_slice(5).to_a
+  end
+
+  def self.sort_events
+    midnight_fix.sort_by!{|e|e.time_stamp}
+    @@sets = @@sets.push(*midnight_fix).each_slice(5).to_a
   end
 
 end
