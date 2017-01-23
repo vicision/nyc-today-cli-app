@@ -6,11 +6,11 @@ require 'nyc_today/version'
 Gem::Specification.new do |spec|
   spec.name          = "nyc_today"
   spec.version       = NycToday::VERSION
-  spec.authors       = ["vicision"]
-  spec.email         = ["duncan.j.mclachlan@gmail.com"]
+  spec.authors       = ["Duncan McLachlan"]
+  spec.email         = ["duncanjmclachlan@gmail.com"]
 
-  spec.summary       = ["A ruby gem that lists info about today's indie concerts and other events in NYC"]
-  # spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{CLI that lists and provides information about today's events in and around NYC.}
+  spec.description   = %q{This CLI app lists a set of event categories in and around New York City for users to select from, displays a list of events and their details from that chosen type and displays further information (if available) about any chosen event.}
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
