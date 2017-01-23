@@ -58,6 +58,7 @@ class NycToday::Event
     @@sets.reject! do |e|
       e.time_stamp.to_s[11].to_i == 0 && e.time_stamp.to_s[12].to_i < 7 ? midnight << e : nil
     end
+    midnight
   end
 
   def self.sort_events
