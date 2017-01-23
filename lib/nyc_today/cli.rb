@@ -130,8 +130,8 @@ class NycToday::CLI
       -------------------------------------------------------------------
       * Enter the number of any event you'd like to know more about
       * Press Enter for more events
-      * Type 'menu' to return to the main menu
-      * Type 'back' to go back or 'exit' to leave the program
+      * Enter 'menu' to return to the main menu
+      * Enter 'back' to go back or 'exit' to leave the program
     HEREDOC
   end
 
