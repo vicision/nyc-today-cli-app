@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{CLI that lists and provides information about today's events in and around NYC.}
   spec.description   = %q{This CLI app lists a set of event categories in and around New York City for users to select from, displays a list of events and their details from that chosen type and displays further information (if available) about any chosen event.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/vicision/nyc-today-cli-app"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
