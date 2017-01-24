@@ -184,7 +184,7 @@ class NycToday::CLI
       list_events
     elsif input == "n" || input == "no"
       puts "\nReturning to main menu..."
-      sleep 1.25
+      sleep 1
       reset_menu
     else
       error
@@ -203,7 +203,7 @@ class NycToday::CLI
   def goodbye
     system "clear"
     puts "\nGood-bye! Come back tomorrow for a new list of events."
-    sleep 1.25
+    sleep 1.1
     system "clear"
     exit
   end
