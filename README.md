@@ -20,7 +20,9 @@ Or install it yourself as:
 
 ## Usage
 
-To use NYC Today after installing, type 'nyc-today' in the command line and follow the on-screen prompts when the gem launches.
+To use NYC Today after installing, type `nyc-today` in the command line and follow the on-screen prompts when the gem launches.
+
+If you're having trouble launching the gem, try entering `gem install bundler` to update your Bundler installation.
 
 ## Development
 
