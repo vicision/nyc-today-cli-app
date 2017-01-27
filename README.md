@@ -24,9 +24,9 @@ Or install it yourself as:
 
 To use NYC Today after installing, type `nyc_today` in the command line and follow the on-screen prompts when the gem launches.
 
-Getting errors? Add an [issue](https://github.com/vicision/nyc-today-cli-app/issues). But if it's one of the following, try the suggestions below:
+Getting errors? Add an [issue](https://github.com/vicision/nyc-today-cli-app/issues). If it's one of the following, try the suggestions below:
 
-* If your error looks like the one below, try running `gem install bundler` to update your Bundler installation. You may then also need to reinstall the `nyc_today` gem:
+* If your error looks like this one, try running `gem install bundler` to update your Bundler installation. You may then also need to reinstall the `nyc_today` gem:
 
   ```
   /Users/your_name/.rvm/rubies/ruby-2.4.0/lib/ruby/site_ruby/2.4.0/rubygems/core_ext/kernel_require.rb:55:in `require': cannot load such file -- bundler/setup (LoadError)
