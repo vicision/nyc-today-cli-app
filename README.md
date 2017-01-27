@@ -4,7 +4,7 @@ NYC Today is a Ruby Gem that provides a CLI for navigating events from [Brooklyn
 
 ## Installation
 
-> * This gem requires Ruby version 2.3.0 or higher
+* This gem requires Ruby version 2.3.0 or higher *
 
 Add this line to your application's Gemfile:
 
