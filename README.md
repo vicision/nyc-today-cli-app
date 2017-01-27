@@ -27,7 +27,6 @@ To use NYC Today after installing, type `nyc_today` in the command line and foll
 Getting errors? Add an [issue](https://github.com/vicision/nyc-today-cli-app/issues). But if it's one of the following, try the suggestions below:
 
 * If your error looks like this:
-
 ```/Users/your_name/.rvm/rubies/ruby-2.4.0/lib/ruby/site_ruby/2.4.0/rubygems/core_ext/kernel_require.rb:55:in `require': cannot load such file -- bundler/setup (LoadError)
     from /Users/your_name/.rvm/rubies/ruby-2.4.0/lib/ruby/site_ruby/2.4.0/rubygems/core_ext/kernel_require.rb:55:in `require'
     from /Users/your_name/.rvm/gems/ruby-2.4.0@global/gems/nyc_today-0.1.3/bin/nyc_today:3:in `<top (required)>'
@@ -35,8 +34,8 @@ Getting errors? Add an [issue](https://github.com/vicision/nyc-today-cli-app/iss
     from /Users/your_name/.rvm/rubies/ruby-2.4.0/bin/nyc_today:22:in `<main>'
     from /Users/your_name/.rvm/gems/ruby-2.4.0@global/bin/ruby_executable_hooks:15:in `eval'
     from /Users/your_name/.rvm/gems/ruby-2.4.0@global/bin/ruby_executable_hooks:15:in `<main>'
-    ```
-    Try running `gem install bundler` to update your Bundler installation. You may then also need to reinstall the `nyc_today` gem.
+```
+Try running `gem install bundler` to update your Bundler installation. You may then also need to reinstall the `nyc_today` gem.
 
 * If your error looks like this:
 
