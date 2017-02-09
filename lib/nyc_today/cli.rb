@@ -55,7 +55,7 @@ class NycToday::CLI
     else
       system "clear"
       puts "I'm sorry, that is not an option. Please choose a number from the menu."
-      sleep 1
+      sleep 2
       system "clear"
       list_event_types
     end
@@ -91,7 +91,7 @@ class NycToday::CLI
 
   def error
     puts "I'm sorry, I didn't understand what you typed. Please try again."
-    sleep 1
+    sleep 2
     system "clear"
   end
 
@@ -101,7 +101,7 @@ class NycToday::CLI
     if input == "" or input == " "
       @@set_no += 1
       list_events
-    elsif input.to_i > 0
+    elsif input.to_i > 0 && input.to_i <= NycToday::Event.sets[@@set_no].count
       event = NycToday::Event.sets[@@set_no][input.to_i-1]
       NycToday::Scraper.scrape_event_page(event) unless event.event_info != nil
       more_info(event)
@@ -120,7 +120,6 @@ class NycToday::CLI
     else
       system "clear"
       error
-      sleep 2
       list_events
     end
   end
